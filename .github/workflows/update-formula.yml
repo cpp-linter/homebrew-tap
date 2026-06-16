@@ -1,0 +1,67 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [new-release]
+  schedule:
+    # Daily check for new releases
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to update to (e.g., 2026.06.15-a56c0263)'
+        required: true
+        type: string
+
+jobs:
+  update:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine release tag
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.release_tag }}" ]; then
+            echo "tag=${{ github.event.inputs.release_tag }}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ github.event.client_payload.release_tag }}" ]; then
+            echo "tag=${{ github.event.client_payload.release_tag }}" >> "$GITHUB_OUTPUT"
+          else
+            # Fetch the latest release from upstream
+            TAG=$(curl -sL https://api.github.com/repos/cpp-linter/clang-tools-static-binaries/releases/latest | \
+                  python3 -c "import json,sys;print(json.load(sys.stdin)['tag_name'])")
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run update script
+        run: |
+          bash scripts/update-formula.sh "${{ steps.tag.outputs.tag }}"
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet -- 'Formula/*.rb'; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update formulae to ${{ steps.tag.outputs.tag }}"
+          branch: auto-update-${{ steps.tag.outputs.tag }}
+          delete-branch: true
+          title: "Update formulae to ${{ steps.tag.outputs.tag }}"
+          body: |
+            Automated update of Homebrew formulae to match upstream release
+            **[cpp-linter/clang-tools-static-binaries@${{ steps.tag.outputs.tag }}](https://github.com/cpp-linter/clang-tools-static-binaries/releases/tag/${{ steps.tag.outputs.tag }})**
+
+            - Regenerated all `Formula/*.rb` files with updated URLs and SHA-256 checksums.
+            - `clang-tools-static-binaries.rb` updated to latest version.
+          labels: |
+            automated
+          assignees: |
+            ${{ github.actor }}
