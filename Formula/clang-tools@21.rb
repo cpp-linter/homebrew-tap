@@ -1,4 +1,4 @@
-class ClangToolsStaticBinariesAT21 < Formula
+class ClangToolsAT21 < Formula
   desc "Static binaries for clang-format, clang-tidy, clang-query, clang-apply-replacements, and clang-include-cleaner"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
   version "21"

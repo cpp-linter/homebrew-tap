@@ -18,14 +18,14 @@ No compilation required — binaries are downloaded directly from GitHub Release
 brew tap cpp-linter/tap
 
 # Install the latest version (currently LLVM 22)
-brew install clang-tools-static-binaries
+brew install clang-tools
 
 # Install a specific version
-brew install clang-tools-static-binaries@22
-brew install clang-tools-static-binaries@21
-brew install clang-tools-static-binaries@20
-brew install clang-tools-static-binaries@19
-brew install clang-tools-static-binaries@18
+brew install clang-tools@22
+brew install clang-tools@21
+brew install clang-tools@20
+brew install clang-tools@19
+brew install clang-tools@18
 ```
 
 ## Usage
@@ -52,7 +52,7 @@ The SHA-256 checksums are verified during installation.
 
 ```bash
 brew update
-brew upgrade clang-tools-static-binaries
+brew upgrade clang-tools
 ```
 
 ## Development
@@ -68,7 +68,7 @@ Example:
 bash scripts/update-formula.sh 2026.06.15-a56c0263
 ```
 
-This will regenerate all `Formula/clang-tools-static-binaries*.rb` files with
+This will regenerate all `Formula/clang-tools*.rb` files with
 the correct URLs and SHA-256 checksums.
 
 There is also a GitHub Actions workflow (`.github/workflows/update-formula.yml`)

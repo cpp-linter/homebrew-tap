@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-update-formula.py — Regenerate Homebrew formulae for clang-tools-static-binaries.
+update-formula.py — Regenerate Homebrew formulae for clang-tools.
 
 Usage:
     python3 scripts/update-formula.py <release-tag>
@@ -10,8 +10,8 @@ Example:
 
 This script:
   1. Downloads SHA256 checksums for all tool binaries from the given release
-  2. Regenerates Formula/clang-tools-static-binaries.rb (latest version)
-  3. Regenerates Formula/clang-tools-static-binaries@<ver>.rb for each version (18-22)
+  2. Regenerates Formula/clang-tools.rb (latest version)
+  3. Regenerates Formula/clang-tools@<ver>.rb for each version (18-22)
 """
 
 from __future__ import annotations
@@ -72,8 +72,8 @@ def generate_formula(
 ) -> str:
     """Generate the content of a Homebrew formula file."""
     ver = version
-    formula_name = "clang-tools-static-binaries.rb" if is_latest else f"clang-tools-static-binaries@{ver}.rb"
-    class_name = "ClangToolsStaticBinaries" if is_latest else f"ClangToolsStaticBinariesAT{ver}"
+    formula_name = "clang-tools.rb" if is_latest else f"clang-tools@{ver}.rb"
+    class_name = "ClangTools" if is_latest else f"ClangToolsAT{ver}"
 
     include_cleaner = ver >= 18
 
@@ -219,7 +219,7 @@ def main() -> None:
 
     for i, ver in enumerate(VERSIONS):
         is_latest = (i == 0)
-        formula_name = "clang-tools-static-binaries.rb" if is_latest else f"clang-tools-static-binaries@{ver}.rb"
+        formula_name = "clang-tools.rb" if is_latest else f"clang-tools@{ver}.rb"
         formula_path = FORMULA_DIR / formula_name
 
         content = generate_formula(ver, release_tag, sha_map, is_latest)
