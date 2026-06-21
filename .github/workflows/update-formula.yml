@@ -21,15 +21,21 @@ jobs:
 
       - name: Determine release tag
         id: tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -n "${{ github.event.inputs.release_tag }}" ]; then
             echo "tag=${{ github.event.inputs.release_tag }}" >> "$GITHUB_OUTPUT"
           elif [ -n "${{ github.event.client_payload.release_tag }}" ]; then
             echo "tag=${{ github.event.client_payload.release_tag }}" >> "$GITHUB_OUTPUT"
           else
-            # Fetch the latest release from upstream
-            TAG=$(curl -sL https://api.github.com/repos/cpp-linter/clang-tools-static-binaries/releases/latest | \
-                  python3 -c "import json,sys;print(json.load(sys.stdin)['tag_name'])")
+            # Fetch the latest release from upstream (authenticated to avoid API rate limits)
+            RESPONSE=$(curl -sL \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/cpp-linter/clang-tools-static-binaries/releases/latest)
+            TAG=$(printf '%s' "$RESPONSE" | python3 -c "import json,sys; d=json.load(sys.stdin); t=d.get('tag_name'); print(t) if t else (sys.stderr.write('Failed to determine latest release tag. API response: '+json.dumps(d)+chr(10)), sys.exit(1))")
             echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           fi
 
