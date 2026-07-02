@@ -24,7 +24,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13, macos-latest]
+        os:
+          - macos-13       # Intel (x86_64) → tests on_intel code path
+          - macos-latest   # Apple Silicon (arm64) → tests on_arm code path
     steps:
       - uses: actions/checkout@v7
 
@@ -49,7 +51,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13, macos-latest]
+        os:
+          - macos-13       # Intel (x86_64) → tests on_intel code path
+          - macos-latest   # Apple Silicon (arm64) → tests on_arm code path
         formula:
           - llvm-cov
           - llvm-profdata
