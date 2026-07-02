@@ -1,0 +1,81 @@
+name: Test Formulae
+
+on:
+  pull_request:
+    paths:
+      - 'Formula/*.rb'
+  push:
+    branches: [main]
+    paths:
+      - 'Formula/*.rb'
+
+env:
+  # Suppress tap trust warnings for untrusted taps (e.g., aws/tap) on the runner
+  HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-combined:
+    name: Test clang-tools (combined) on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-13
+            arch: Intel (x86_64)
+          - os: macos-latest
+            arch: Apple Silicon (arm64)
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Tap and trust local repository
+        run: |
+          brew untap cpp-linter/homebrew-tap 2>/dev/null || true
+          brew tap cpp-linter/homebrew-tap "$PWD"
+          brew trust cpp-linter/tap
+
+      - name: Install clang-tools (on ${{ matrix.arch }})
+        run: brew install clang-tools
+        timeout-minutes: 10
+
+      - name: Test clang-tools (on ${{ matrix.arch }})
+        run: brew test clang-tools
+        timeout-minutes: 5
+
+  test-individual:
+    name: Test ${{ matrix.formula }} on ${{ matrix.os }}
+    needs: test-combined
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-13
+            arch: Intel (x86_64)
+          - os: macos-latest
+            arch: Apple Silicon (arm64)
+        formula:
+          - llvm-cov
+          - llvm-profdata
+          - llvm-symbolizer
+          - clang-scan-deps
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Tap and trust local repository
+        run: |
+          brew untap cpp-linter/homebrew-tap 2>/dev/null || true
+          brew tap cpp-linter/homebrew-tap "$PWD"
+          brew trust cpp-linter/tap
+
+      - name: Install ${{ matrix.formula }} (on ${{ matrix.arch }})
+        run: brew install ${{ matrix.formula }}
+        timeout-minutes: 10
+
+      - name: Test ${{ matrix.formula }} (on ${{ matrix.arch }})
+        run: brew test ${{ matrix.formula }}
+        timeout-minutes: 5
