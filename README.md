@@ -3,12 +3,14 @@
 Homebrew tap for [clang-tools-static-binaries](https://github.com/cpp-linter/clang-tools-static-binaries).
 
 Provides pre-built static binaries for:
-- **clang-format**
-- **clang-tidy**
-- **clang-query**
-- **clang-apply-replacements**
-- **clang-include-cleaner** (LLVM 18+)
 
+| Category | Tools |
+|----------|-------|
+| **Clang tools** | `clang-format`, `clang-tidy`, `clang-query`, `clang-apply-replacements`, `clang-scan-deps` |
+| **LLVM utilities** | `llvm-cov`, `llvm-profdata`, `llvm-symbolizer` |
+| **Extra** | `clang-include-cleaner` (LLVM 18+) |
+
+All 9 tools are bundled in the `clang-tools` formula, or can be installed individually.
 No compilation required — binaries are downloaded directly from GitHub Releases.
 
 ## Installation
@@ -37,13 +39,17 @@ Install only what you need:
 
 ```bash
 # Latest versions
-brew install clang-format      # only clang-format
-brew install clang-tidy        # only clang-tidy
-brew install clang-query       # only clang-query
-brew install clang-apply-replacements  # only clang-apply-replacements
-brew install clang-include-cleaner     # only clang-include-cleaner
+brew install clang-format              # code formatter
+brew install clang-tidy                # linter / static analyzer
+brew install clang-query               # AST query tool
+brew install clang-apply-replacements  # apply clang-tidy fixes
+brew install clang-include-cleaner     # remove unused headers (LLVM 18+)
+brew install clang-scan-deps           # dependency scanner for modules
+brew install llvm-cov                  # code coverage reporting
+brew install llvm-profdata             # profile data tool
+brew install llvm-symbolizer           # symbolizer for sanitizers / logs
 
-# Specific older versions
+# Specific older versions (append @<version>)
 brew install clang-format@18
 brew install clang-tidy@19
 brew install clang-query@20
@@ -60,6 +66,10 @@ clang-tidy --version
 clang-query --version
 clang-apply-replacements --version
 clang-include-cleaner --version   # LLVM 18+
+clang-scan-deps --version
+llvm-cov --version
+llvm-profdata --version
+llvm-symbolizer --version
 ```
 
 ## How It Works
@@ -74,12 +84,16 @@ The SHA-256 checksums are verified during installation.
 
 | Formula | Installs |
 |---|---|
-| `clang-tools` / `clang-tools@<ver>` | All 5 tools |
-| `clang-format` / `clang-format@<ver>` | Only clang-format |
-| `clang-tidy` / `clang-tidy@<ver>` | Only clang-tidy |
-| `clang-query` / `clang-query@<ver>` | Only clang-query |
-| `clang-apply-replacements` / `clang-apply-replacements@<ver>` | Only clang-apply-replacements |
-| `clang-include-cleaner` / `clang-include-cleaner@<ver>` | Only clang-include-cleaner |
+| `clang-tools` / `clang-tools@<ver>` | **All 9 tools** |
+| `clang-format` / `clang-format@<ver>` | Only `clang-format` |
+| `clang-tidy` / `clang-tidy@<ver>` | Only `clang-tidy` |
+| `clang-query` / `clang-query@<ver>` | Only `clang-query` |
+| `clang-apply-replacements` / `clang-apply-replacements@<ver>` | Only `clang-apply-replacements` |
+| `clang-include-cleaner` / `clang-include-cleaner@<ver>` | Only `clang-include-cleaner` (LLVM 18+) |
+| `clang-scan-deps` / `clang-scan-deps@<ver>` | Only `clang-scan-deps` |
+| `llvm-cov` / `llvm-cov@<ver>` | Only `llvm-cov` |
+| `llvm-profdata` / `llvm-profdata@<ver>` | Only `llvm-profdata` |
+| `llvm-symbolizer` / `llvm-symbolizer@<ver>` | Only `llvm-symbolizer` |
 
 ## Updating
 
