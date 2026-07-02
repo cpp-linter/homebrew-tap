@@ -24,10 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Tap local repository
+      - name: Tap and trust local repository
         run: |
           brew untap cpp-linter/homebrew-tap 2>/dev/null || true
           brew tap cpp-linter/homebrew-tap "$PWD"
+          brew trust cpp-linter/tap
 
       - name: Install clang-tools formula
         run: brew install clang-tools
@@ -53,10 +54,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Tap local repository
+      - name: Tap and trust local repository
         run: |
           brew untap cpp-linter/homebrew-tap 2>/dev/null || true
           brew tap cpp-linter/homebrew-tap "$PWD"
+          brew trust cpp-linter/tap
 
       - name: Install ${{ matrix.formula }}
         run: brew install ${{ matrix.formula }}
