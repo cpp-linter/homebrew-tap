@@ -9,6 +9,10 @@ on:
     paths:
       - 'Formula/*.rb'
 
+env:
+  # Suppress tap trust warnings for untrusted taps (e.g., aws/tap) on the runner
+  HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,7 +26,7 @@ jobs:
       matrix:
         os: [macos-13, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Tap and trust local repository
         run: |
@@ -52,7 +56,7 @@ jobs:
           - llvm-symbolizer
           - clang-scan-deps
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Tap and trust local repository
         run: |
