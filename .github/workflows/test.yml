@@ -25,7 +25,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Tap local repository
-        run: brew tap --force-auto-update cpp-linter/homebrew-tap "$PWD"
+        run: |
+          brew untap cpp-linter/homebrew-tap 2>/dev/null || true
+          brew tap cpp-linter/homebrew-tap "$PWD"
 
       - name: Install clang-tools formula
         run: brew install clang-tools
@@ -52,7 +54,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Tap local repository
-        run: brew tap --force-auto-update cpp-linter/homebrew-tap "$PWD"
+        run: |
+          brew untap cpp-linter/homebrew-tap 2>/dev/null || true
+          brew tap cpp-linter/homebrew-tap "$PWD"
 
       - name: Install ${{ matrix.formula }}
         run: brew install ${{ matrix.formula }}
