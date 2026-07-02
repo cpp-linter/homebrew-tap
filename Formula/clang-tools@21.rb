@@ -4,53 +4,53 @@ class ClangToolsAT21 < Formula
   version "21"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-format-21_macos-arm64"
-    sha256 "f26e8b315b4f85db37c6b0b55be3fdb6940562b8cb1f21d25e272f7747a3a263"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-format-21_macos-arm64"
+    sha256 "d7902edc5c898eef96449ff302c3ce2123182ad908f2f01526cd549893e4a0e3"
 
     resource "clang-tidy" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-tidy-21_macos-arm64"
-      sha256 "7e44894534ccaa37859bec0abd872ab9770d0c974b2f8de532445a9b0755c328"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-tidy-21_macos-arm64"
+      sha256 "73497cb6e5f14c1b3ea8d5df7a906bc1c997e0a6936758d0b155a86e337d1406"
     end
 
     resource "clang-query" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-query-21_macos-arm64"
-      sha256 "1cea78a6dc1f50ed1ad57fd217d7d6ec48bd63ae7719ef459e9d01368aafef82"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-query-21_macos-arm64"
+      sha256 "cee5e17ac3ba810193931d998fe642732996fa574cedd48ca29733add16b5c4d"
     end
 
     resource "clang-apply-replacements" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-apply-replacements-21_macos-arm64"
-      sha256 "8631f2e45b4d1e63726ea496b684569cc396a5153ae117430b7b20649d6fb48a"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-apply-replacements-21_macos-arm64"
+      sha256 "bc0e04f6d1dedca78c09d41799b5536fbdc2e669e3e6facbdb1c6dd8ce68dba0"
     end
 
     resource "clang-include-cleaner" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-include-cleaner-21_macos-arm64"
-      sha256 "6f585c4973d1889bbdd1f93faf6c9ee265567f6f7ddd68a8828cf43f44c23f7b"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-include-cleaner-21_macos-arm64"
+      sha256 "405df3afbb3994f62ca797ece886f3f0c901d99ccaac65cdc00a16e45a12ca31"
     end
 
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-format-21_macos-amd64"
-    sha256 "06dc259924fb2e46f1f046d0134b96e4c6ecad4e155f5b53edea3394c6b47ff9"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-format-21_macos-amd64"
+    sha256 "2d200fefa507f1ef95acdd3f497115e545b09362bf8c986ebd57c67349d56874"
 
     resource "clang-tidy" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-tidy-21_macos-amd64"
-      sha256 "1fc65ca255b56b6206099036ce7ae474cef4308f6f495878b61182e2c1d03bac"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-tidy-21_macos-amd64"
+      sha256 "aead686afe5654692235ffa54db7580e9cac46914a023395cae6b9047629581b"
     end
 
     resource "clang-query" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-query-21_macos-amd64"
-      sha256 "9002414bd5165bcea8fe47fa5140bba8686b47a2d92484ea4f01b863bb996472"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-query-21_macos-amd64"
+      sha256 "ad4bf98cf71283bb1504bec3904a234ef5845c7c23ef6a395782c25fb7f3de5c"
     end
 
     resource "clang-apply-replacements" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-apply-replacements-21_macos-amd64"
-      sha256 "6a8235d886c36ee43525c4e31d1a9eb23b4bec86f2215a068b0a0cf9849cbd06"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-apply-replacements-21_macos-amd64"
+      sha256 "6b08319b887aa2034173dcb00838fa1308df2cc27248c7770dd1e7195c3524d9"
     end
 
     resource "clang-include-cleaner" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-include-cleaner-21_macos-amd64"
-      sha256 "504aa6314df7d8a0b96a792648523b8033a802bf533971bdae6bea686fd57762"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-include-cleaner-21_macos-amd64"
+      sha256 "b45633650da8cd63b75bee7c730d3f6c6c3696560bb6ec21c562150e67851b18"
     end
 
   end
