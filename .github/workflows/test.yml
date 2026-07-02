@@ -1,0 +1,63 @@
+name: Test Formulae
+
+on:
+  pull_request:
+    paths:
+      - 'Formula/*.rb'
+  push:
+    branches: [main]
+    paths:
+      - 'Formula/*.rb'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-combined:
+    name: Test clang-tools (combined)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-13, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tap local repository
+        run: brew tap --force-auto-update cpp-linter/homebrew-tap "$PWD"
+
+      - name: Install clang-tools formula
+        run: brew install clang-tools
+        timeout-minutes: 10
+
+      - name: Test clang-tools formula
+        run: brew test clang-tools
+        timeout-minutes: 5
+
+  test-individual:
+    name: Test ${{ matrix.formula }} (standalone)
+    needs: test-combined
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-13, macos-latest]
+        formula:
+          - llvm-cov
+          - llvm-profdata
+          - llvm-symbolizer
+          - clang-scan-deps
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tap local repository
+        run: brew tap --force-auto-update cpp-linter/homebrew-tap "$PWD"
+
+      - name: Install ${{ matrix.formula }}
+        run: brew install ${{ matrix.formula }}
+        timeout-minutes: 10
+
+      - name: Test ${{ matrix.formula }}
+        run: brew test ${{ matrix.formula }}
+        timeout-minutes: 5
