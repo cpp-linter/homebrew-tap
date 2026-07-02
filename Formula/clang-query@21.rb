@@ -4,13 +4,13 @@ class ClangQueryAT21 < Formula
   version "21"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-query-21_macos-arm64"
-    sha256 "1cea78a6dc1f50ed1ad57fd217d7d6ec48bd63ae7719ef459e9d01368aafef82"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-query-21_macos-arm64"
+    sha256 "cee5e17ac3ba810193931d998fe642732996fa574cedd48ca29733add16b5c4d"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.06.15-a56c0263/clang-query-21_macos-amd64"
-    sha256 "9002414bd5165bcea8fe47fa5140bba8686b47a2d92484ea4f01b863bb996472"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-query-21_macos-amd64"
+    sha256 "ad4bf98cf71283bb1504bec3904a234ef5845c7c23ef6a395782c25fb7f3de5c"
   end
 
   def install
