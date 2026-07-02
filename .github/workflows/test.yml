@@ -19,14 +19,16 @@ concurrency:
 
 jobs:
   test-combined:
-    name: Test clang-tools (combined)
+    name: Test clang-tools (combined) on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-13       # Intel (x86_64) → tests on_intel code path
-          - macos-latest   # Apple Silicon (arm64) → tests on_arm code path
+        include:
+          - os: macos-13
+            arch: Intel (x86_64)
+          - os: macos-latest
+            arch: Apple Silicon (arm64)
     steps:
       - uses: actions/checkout@v7
 
@@ -36,24 +38,26 @@ jobs:
           brew tap cpp-linter/homebrew-tap "$PWD"
           brew trust cpp-linter/tap
 
-      - name: Install clang-tools formula
+      - name: Install clang-tools (on ${{ matrix.arch }})
         run: brew install clang-tools
         timeout-minutes: 10
 
-      - name: Test clang-tools formula
+      - name: Test clang-tools (on ${{ matrix.arch }})
         run: brew test clang-tools
         timeout-minutes: 5
 
   test-individual:
-    name: Test ${{ matrix.formula }} (standalone)
+    name: Test ${{ matrix.formula }} on ${{ matrix.os }}
     needs: test-combined
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-13       # Intel (x86_64) → tests on_intel code path
-          - macos-latest   # Apple Silicon (arm64) → tests on_arm code path
+        include:
+          - os: macos-13
+            arch: Intel (x86_64)
+          - os: macos-latest
+            arch: Apple Silicon (arm64)
         formula:
           - llvm-cov
           - llvm-profdata
@@ -68,10 +72,10 @@ jobs:
           brew tap cpp-linter/homebrew-tap "$PWD"
           brew trust cpp-linter/tap
 
-      - name: Install ${{ matrix.formula }}
+      - name: Install ${{ matrix.formula }} (on ${{ matrix.arch }})
         run: brew install ${{ matrix.formula }}
         timeout-minutes: 10
 
-      - name: Test ${{ matrix.formula }}
+      - name: Test ${{ matrix.formula }} (on ${{ matrix.arch }})
         run: brew test ${{ matrix.formula }}
         timeout-minutes: 5
