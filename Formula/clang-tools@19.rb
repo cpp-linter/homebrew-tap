@@ -1,5 +1,5 @@
 class ClangToolsAT19 < Formula
-  desc "Static binaries for clang-format, clang-tidy, clang-query, clang-apply-replacements, clang-include-cleaner, llvm-cov, llvm-profdata, llvm-symbolizer, and clang-scan-deps"
+  desc "Static binaries for clang-format, clang-tidy, clang-query, clang-apply-replacements, and clang-include-cleaner"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
   version "19"
 
@@ -25,26 +25,6 @@ class ClangToolsAT19 < Formula
     resource "clang-include-cleaner" do
       url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-include-cleaner-19_macos-arm64"
       sha256 "6fd5b53876baed52ad16149f61eccaee77771bc00c80f6eafb690dfde1778efc"
-    end
-
-    resource "llvm-cov" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-cov-19_macos-arm64"
-      sha256 "b517989777d8877f81f2ae2414f9ed15e1d6868862198d3a20bf7638ce9b8bc3"
-    end
-
-    resource "llvm-profdata" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-profdata-19_macos-arm64"
-      sha256 "e12b9a1f5161324bf88a3d75af78106067ec2641b858828895965b1f6334f82a"
-    end
-
-    resource "llvm-symbolizer" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-symbolizer-19_macos-arm64"
-      sha256 "7d8ee2da65742ac177e19c9b14053fce6de0598e1271f9c27f67b2a150daf86c"
-    end
-
-    resource "clang-scan-deps" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-scan-deps-19_macos-arm64"
-      sha256 "6ffcf61496b720ecd7a710d1e95d1af930016b1976c26db47bdeb8facc5fabc9"
     end
 
   end
@@ -73,26 +53,6 @@ class ClangToolsAT19 < Formula
       sha256 "511289dddbe2f6cf141b942e5289f120e99a232e6fe9db9ec1452a8b820470d8"
     end
 
-    resource "llvm-cov" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-cov-19_macos-amd64"
-      sha256 "4c174d947dad3c9e1da25ba9064e1cd26247b8af8cf548eb58874e86a5a77c9e"
-    end
-
-    resource "llvm-profdata" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-profdata-19_macos-amd64"
-      sha256 "97fd096cdd2a5fef5cda5638212d8fd17da4f2bb3139d28be34620ce203f36f6"
-    end
-
-    resource "llvm-symbolizer" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-symbolizer-19_macos-amd64"
-      sha256 "6ae448fa0fb709ffd91e4b2a7cadac89b29c9251b27534342034e9fb856a6dc4"
-    end
-
-    resource "clang-scan-deps" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-scan-deps-19_macos-amd64"
-      sha256 "1be51f8d70402ff9edebddc3001a75aa2d660153db7d394aa40c3a37264622f5"
-    end
-
   end
 
   def install
@@ -100,7 +60,7 @@ class ClangToolsAT19 < Formula
     bin.install Dir["clang-format-*"].first => "clang-format"
 
     # Install tool resources
-    %w[clang-tidy clang-query clang-apply-replacements clang-include-cleaner llvm-cov llvm-profdata llvm-symbolizer clang-scan-deps].each do |tool|
+    %w[clang-tidy clang-query clang-apply-replacements clang-include-cleaner].each do |tool|
       next unless resource(tool)
       resource(tool).stage do
         bin.install Dir["*"].first => tool
@@ -115,9 +75,5 @@ class ClangToolsAT19 < Formula
     system "#{bin}/clang-tidy", "--version"
     system "#{bin}/clang-query", "--version"
     system "#{bin}/clang-apply-replacements", "--version"
-    system "#{bin}/llvm-cov", "--version"
-    system "#{bin}/llvm-profdata", "--version"
-    system "#{bin}/llvm-symbolizer", "--version"
-    system "#{bin}/clang-scan-deps", "--version"
   end
 end
