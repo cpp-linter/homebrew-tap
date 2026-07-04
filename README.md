@@ -1,6 +1,14 @@
+<div align="center">
+
 # cpp-linter Homebrew Tap
 
+[![Test Formulae](https://github.com/cpp-linter/homebrew-tap/actions/workflows/test.yml/badge.svg)](https://github.com/cpp-linter/homebrew-tap/actions/workflows/test.yml)
+[![Update Formula](https://github.com/cpp-linter/homebrew-tap/actions/workflows/update-formula.yml/badge.svg)](https://github.com/cpp-linter/homebrew-tap/actions/workflows/update-formula.yml)
+[![cpp-linter hub](https://img.shields.io/badge/%F0%9F%8F%A0_cpp--linter_hub-%E2%86%90_home-22863a)](https://cpp-linter.github.io/)
+
 Homebrew tap for [clang-tools-static-binaries](https://github.com/cpp-linter/clang-tools-static-binaries).
+
+</div>
 
 Provides pre-built static binaries for:
 

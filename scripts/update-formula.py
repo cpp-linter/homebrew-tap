@@ -24,51 +24,68 @@ import urllib.request
 from pathlib import Path
 
 
-# ── Configuration ──────────────────────────────────────────────────────────────
+# ── Configuration ─────────────────────────────────────────────────────────────
 
 OWNER = "cpp-linter"
 REPO = "clang-tools-static-binaries"
 VERSIONS = [22, 21, 20, 19, 18]
-TOOLS_ALL = ["clang-format", "clang-tidy", "clang-query", "clang-apply-replacements"]
-TOOLS_IC = ["clang-include-cleaner"]  # LLVM 18+
-PLATFORMS = ["macos-arm64", "macos-amd64"]
 
-# Individual tool formula metadata
-# tool_key -> {class_prefix, bin_name, desc}
-INDIVIDUAL_TOOLS = {
-    "clang-format": {
-        "class_prefix": "ClangFormat",
-        "bin": "clang-format",
-        "desc": "clang-format",
-    },
-    "clang-tidy": {
-        "class_prefix": "ClangTidy",
-        "bin": "clang-tidy",
-        "desc": "clang-tidy",
-    },
-    "clang-query": {
-        "class_prefix": "ClangQuery",
-        "bin": "clang-query",
-        "desc": "clang-query",
-    },
-    "clang-apply-replacements": {
-        "class_prefix": "ClangApplyReplacements",
-        "bin": "clang-apply-replacements",
-        "desc": "clang-apply-replacements",
-    },
-    "clang-include-cleaner": {
-        "class_prefix": "ClangIncludeCleaner",
-        "bin": "clang-include-cleaner",
-        "desc": "clang-include-cleaner",
-    },
-}
+# Every tool shipped in an upstream release, in the order they appear in the
+# generated formulae. `min_version` gates a tool to the LLVM releases that
+# actually ship it (e.g. clang-include-cleaner only exists from LLVM 18); tools
+# without it are assumed present on every supported version.
+TOOLS = [
+    {"name": "clang-format"},
+    {"name": "clang-tidy"},
+    {"name": "clang-query"},
+    {"name": "clang-apply-replacements"},
+    {"name": "clang-include-cleaner", "min_version": 18},
+    {"name": "llvm-cov"},
+    {"name": "llvm-profdata"},
+    {"name": "llvm-symbolizer"},
+    {"name": "clang-scan-deps"},
+]
+
+# The bundle formula installs clang-format as its primary binary; every other
+# tool is attached as a Homebrew `resource`.
+PRIMARY_TOOL = "clang-format"
+
+PLATFORMS = ["macos-arm64", "macos-amd64"]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 TAP_DIR = SCRIPT_DIR.parent
 FORMULA_DIR = TAP_DIR / "Formula"
 
 
-# ── Helpers ────────────────────────────────────────────────────────────────────
+# ── Tool helpers ────────────────────────────────────────────────────────────
+
+
+def tools_for_version(version: int) -> list[str]:
+    """Names of the tools shipped for a given LLVM version, in formula order."""
+    return [t["name"] for t in TOOLS if version >= t.get("min_version", 0)]
+
+
+def always_available_tools() -> list[str]:
+    """Tools present on every supported version (no `min_version`).
+
+    These are the ones safe to smoke-test in the bundle formula; version-gated
+    tools are installed with a `rescue` and skipped in the test to keep it valid
+    across all versions.
+    """
+    return [t["name"] for t in TOOLS if "min_version" not in t]
+
+
+def formula_class(name: str, version: int | None = None, is_latest: bool = True) -> str:
+    """Homebrew formula class name for a tool (e.g. llvm-cov -> LlvmCov).
+
+    Follows Homebrew's own convention: split on '-', capitalize each part, join.
+    Versioned formulae get an `ATxx` suffix (e.g. clang-tidy@18 -> ClangTidyAT18).
+    """
+    base = "".join(part.capitalize() for part in name.split("-"))
+    return base if is_latest else f"{base}AT{version}"
+
+
+# ── Checksum helpers ───────────────────────────────────────────────────────
 
 
 def sha256_of_url(url: str) -> str | None:
@@ -114,11 +131,12 @@ def generate_bundle_formula(
     """Generate the content of the 'clang-tools' Homebrew formula (bundle)."""
     ver = version
     class_name = "ClangTools" if is_latest else f"ClangToolsAT{ver}"
-    include_cleaner = ver >= 18
 
-    tools_desc = "clang-format, clang-tidy, clang-query, clang-apply-replacements"
-    if include_cleaner:
-        tools_desc += ", and clang-include-cleaner"
+    available = tools_for_version(ver)
+    resource_tools = [t for t in available if t != PRIMARY_TOOL]
+
+    # Human-readable description lists every shipped tool, primary first.
+    tools_desc = ", ".join(available[:-1]) + ", and " + available[-1]
 
     lines: list[str] = []
 
@@ -128,59 +146,31 @@ def generate_bundle_formula(
     lines.append(f'  version "{ver}"')
     lines.append("")
 
-    # ── ARM ──
-    lines.append("  on_arm do")
-    lines.append(f'    url "{rel_url("clang-format", ver, "macos-arm64", release_tag)}"')
-    lines.append(f'    sha256 "{sha(sha_map, "clang-format", ver, "macos-arm64")}"')
-    lines.append("")
-
-    for tool in ["clang-tidy", "clang-query", "clang-apply-replacements"]:
-        lines.append(f'    resource "{tool}" do')
-        lines.append(f'      url "{rel_url(tool, ver, "macos-arm64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, tool, ver, "macos-arm64")}"')
-        lines.append("    end")
+    # ── ARM / Intel share the same resource layout, differing only by platform ──
+    for on_block, platform in (("on_arm", "macos-arm64"), ("on_intel", "macos-amd64")):
+        lines.append(f"  {on_block} do")
+        lines.append(f'    url "{rel_url(PRIMARY_TOOL, ver, platform, release_tag)}"')
+        lines.append(f'    sha256 "{sha(sha_map, PRIMARY_TOOL, ver, platform)}"')
         lines.append("")
 
-    if include_cleaner:
-        lines.append('    resource "clang-include-cleaner" do')
-        lines.append(f'      url "{rel_url("clang-include-cleaner", ver, "macos-arm64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, "clang-include-cleaner", ver, "macos-arm64")}"')
-        lines.append("    end")
+        for tool in resource_tools:
+            lines.append(f'    resource "{tool}" do')
+            lines.append(f'      url "{rel_url(tool, ver, platform, release_tag)}"')
+            lines.append(f'      sha256 "{sha(sha_map, tool, ver, platform)}"')
+            lines.append("    end")
+            lines.append("")
+
+        lines.append("  end")
         lines.append("")
-
-    lines.append("  end")
-    lines.append("")
-
-    # ── Intel ──
-    lines.append("  on_intel do")
-    lines.append(f'    url "{rel_url("clang-format", ver, "macos-amd64", release_tag)}"')
-    lines.append(f'    sha256 "{sha(sha_map, "clang-format", ver, "macos-amd64")}"')
-    lines.append("")
-
-    for tool in ["clang-tidy", "clang-query", "clang-apply-replacements"]:
-        lines.append(f'    resource "{tool}" do')
-        lines.append(f'      url "{rel_url(tool, ver, "macos-amd64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, tool, ver, "macos-amd64")}"')
-        lines.append("    end")
-        lines.append("")
-
-    if include_cleaner:
-        lines.append('    resource "clang-include-cleaner" do')
-        lines.append(f'      url "{rel_url("clang-include-cleaner", ver, "macos-amd64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, "clang-include-cleaner", ver, "macos-amd64")}"')
-        lines.append("    end")
-        lines.append("")
-
-    lines.append("  end")
-    lines.append("")
 
     # ── Install method ──
+    install_list = " ".join(resource_tools)
     lines.append("  def install")
     lines.append('    # Install the main binary (clang-format)')
     lines.append('    bin.install Dir["clang-format-*"].first => "clang-format"')
     lines.append("")
     lines.append("    # Install tool resources")
-    lines.append("    %w[clang-tidy clang-query clang-apply-replacements clang-include-cleaner].each do |tool|")
+    lines.append(f"    %w[{install_list}].each do |tool|")
     lines.append("      next unless resource(tool)")
     lines.append("      resource(tool).stage do")
     lines.append('        bin.install Dir["*"].first => tool')
@@ -192,11 +182,12 @@ def generate_bundle_formula(
     lines.append("")
 
     # ── Test ──
+    # Only smoke-test tools guaranteed present on every version; version-gated
+    # tools may be absent and are skipped to keep the test valid across versions.
+    test_tools = [t for t in always_available_tools() if t in available]
     lines.append("  test do")
-    lines.append('    system "#{bin}/clang-format", "--version"')
-    lines.append('    system "#{bin}/clang-tidy", "--version"')
-    lines.append('    system "#{bin}/clang-query", "--version"')
-    lines.append('    system "#{bin}/clang-apply-replacements", "--version"')
+    for tool in test_tools:
+        lines.append(f'    system "#{{bin}}/{tool}", "--version"')
     lines.append("  end")
     lines.append("end")
     lines.append("")
@@ -208,18 +199,16 @@ def generate_bundle_formula(
 
 
 def generate_individual_formula(
-    tool_key: str,
+    tool: str,
     version: int,
     release_tag: str,
     sha_map: dict[str, str],
     is_latest: bool,
 ) -> str:
     """Generate the content of an individual tool formula."""
-    info = INDIVIDUAL_TOOLS[tool_key]
     ver = version
-    class_name = info["class_prefix"] if is_latest else f'{info["class_prefix"]}AT{ver}'
-    bin_name = info["bin"]
-    desc = f"Static binary for {info['desc']}"
+    class_name = formula_class(tool, ver, is_latest)
+    desc = f"Static binary for {tool}"
 
     lines: list[str] = []
 
@@ -231,27 +220,27 @@ def generate_individual_formula(
 
     # ── ARM ──
     lines.append("  on_arm do")
-    lines.append(f'    url "{rel_url(tool_key, ver, "macos-arm64", release_tag)}"')
-    lines.append(f'    sha256 "{sha(sha_map, tool_key, ver, "macos-arm64")}"')
+    lines.append(f'    url "{rel_url(tool, ver, "macos-arm64", release_tag)}"')
+    lines.append(f'    sha256 "{sha(sha_map, tool, ver, "macos-arm64")}"')
     lines.append("  end")
     lines.append("")
 
     # ── Intel ──
     lines.append("  on_intel do")
-    lines.append(f'    url "{rel_url(tool_key, ver, "macos-amd64", release_tag)}"')
-    lines.append(f'    sha256 "{sha(sha_map, tool_key, ver, "macos-amd64")}"')
+    lines.append(f'    url "{rel_url(tool, ver, "macos-amd64", release_tag)}"')
+    lines.append(f'    sha256 "{sha(sha_map, tool, ver, "macos-amd64")}"')
     lines.append("  end")
     lines.append("")
 
     # ── Install method ──
     lines.append("  def install")
-    lines.append(f'    bin.install Dir["{tool_key}-*"].first => "{bin_name}"')
+    lines.append(f'    bin.install Dir["{tool}-*"].first => "{tool}"')
     lines.append("  end")
     lines.append("")
 
     # ── Test ──
     lines.append("  test do")
-    lines.append(f'    system "#{{bin}}/{bin_name}", "--version"')
+    lines.append(f'    system "#{{bin}}/{tool}", "--version"')
     lines.append("  end")
     lines.append("end")
     lines.append("")
@@ -272,13 +261,11 @@ def main() -> None:
 
     print(f":: Fetching checksums from release {release_tag} ...")
 
-    # Collect SHA-256 for every asset
+    # Collect SHA-256 for every asset shipped by each version.
     sha_map: dict[str, str] = {}
 
-    # All tools that may exist per version
     for ver in VERSIONS:
-        all_tools_for_ver = TOOLS_ALL + (TOOLS_IC if ver >= 18 else [])
-        for tool in all_tools_for_ver:
+        for tool in tools_for_version(ver):
             for platform in PLATFORMS:
                 name = asset_name(tool, ver, platform)
                 url = asset_url(tool, ver, platform, release_tag)
@@ -308,16 +295,11 @@ def main() -> None:
 
     for i, ver in enumerate(VERSIONS):
         is_latest = (i == 0)
-        all_tools_for_ver = list(INDIVIDUAL_TOOLS.keys())
-        # clang-include-cleaner only from LLVM 18+
-        if ver < 18:
-            all_tools_for_ver = [t for t in all_tools_for_ver if t != "clang-include-cleaner"]
-
-        for tool_key in all_tools_for_ver:
-            formula_name = f"{tool_key}.rb" if is_latest else f"{tool_key}@{ver}.rb"
+        for tool in tools_for_version(ver):
+            formula_name = f"{tool}.rb" if is_latest else f"{tool}@{ver}.rb"
             formula_path = FORMULA_DIR / formula_name
 
-            content = generate_individual_formula(tool_key, ver, release_tag, sha_map, is_latest)
+            content = generate_individual_formula(tool, ver, release_tag, sha_map, is_latest)
             formula_path.write_text(content)
             print(f"  ✓ {formula_name}")
 
