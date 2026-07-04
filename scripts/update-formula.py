@@ -31,6 +31,10 @@ REPO = "clang-tools-static-binaries"
 VERSIONS = [22, 21, 20, 19, 18]
 TOOLS_ALL = ["clang-format", "clang-tidy", "clang-query", "clang-apply-replacements"]
 TOOLS_IC = ["clang-include-cleaner"]  # LLVM 18+
+# LLVM utility binaries + clang-scan-deps, shipped for every supported version.
+# These live alongside the clang tools in each upstream release and must be kept
+# in sync here, otherwise a regeneration would silently drop them.
+TOOLS_EXTRA = ["llvm-cov", "llvm-profdata", "llvm-symbolizer", "clang-scan-deps"]
 PLATFORMS = ["macos-arm64", "macos-amd64"]
 
 # Individual tool formula metadata
@@ -60,6 +64,26 @@ INDIVIDUAL_TOOLS = {
         "class_prefix": "ClangIncludeCleaner",
         "bin": "clang-include-cleaner",
         "desc": "clang-include-cleaner",
+    },
+    "llvm-cov": {
+        "class_prefix": "LlvmCov",
+        "bin": "llvm-cov",
+        "desc": "llvm-cov",
+    },
+    "llvm-profdata": {
+        "class_prefix": "LlvmProfdata",
+        "bin": "llvm-profdata",
+        "desc": "llvm-profdata",
+    },
+    "llvm-symbolizer": {
+        "class_prefix": "LlvmSymbolizer",
+        "bin": "llvm-symbolizer",
+        "desc": "llvm-symbolizer",
+    },
+    "clang-scan-deps": {
+        "class_prefix": "ClangScanDeps",
+        "bin": "clang-scan-deps",
+        "desc": "clang-scan-deps",
     },
 }
 
@@ -102,6 +126,20 @@ def rel_url(tool: str, version: int, platform: str, release_tag: str) -> str:
     return asset_url(tool, version, platform, release_tag)
 
 
+def bundle_resource_tools(version: int) -> list[str]:
+    """Tools bundled as Homebrew resources (everything except clang-format), in file order.
+
+    clang-format is the primary download (url/sha on the formula body); every other
+    tool is emitted as a `resource` block. Order here defines the order in the
+    generated formula and must match the hand-maintained files.
+    """
+    tools = ["clang-tidy", "clang-query", "clang-apply-replacements"]
+    if version >= 18:
+        tools.append("clang-include-cleaner")
+    tools += TOOLS_EXTRA
+    return tools
+
+
 # ── Bundle formula (clang-tools) ───────────────────────────────────────────────
 
 
@@ -114,11 +152,12 @@ def generate_bundle_formula(
     """Generate the content of the 'clang-tools' Homebrew formula (bundle)."""
     ver = version
     class_name = "ClangTools" if is_latest else f"ClangToolsAT{ver}"
-    include_cleaner = ver >= 18
 
-    tools_desc = "clang-format, clang-tidy, clang-query, clang-apply-replacements"
-    if include_cleaner:
-        tools_desc += ", and clang-include-cleaner"
+    resource_tools = bundle_resource_tools(ver)
+
+    # Human-readable description lists clang-format first, then every resource.
+    desc_tools = ["clang-format"] + resource_tools
+    tools_desc = ", ".join(desc_tools[:-1]) + ", and " + desc_tools[-1]
 
     lines: list[str] = []
 
@@ -128,59 +167,31 @@ def generate_bundle_formula(
     lines.append(f'  version "{ver}"')
     lines.append("")
 
-    # ── ARM ──
-    lines.append("  on_arm do")
-    lines.append(f'    url "{rel_url("clang-format", ver, "macos-arm64", release_tag)}"')
-    lines.append(f'    sha256 "{sha(sha_map, "clang-format", ver, "macos-arm64")}"')
-    lines.append("")
-
-    for tool in ["clang-tidy", "clang-query", "clang-apply-replacements"]:
-        lines.append(f'    resource "{tool}" do')
-        lines.append(f'      url "{rel_url(tool, ver, "macos-arm64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, tool, ver, "macos-arm64")}"')
-        lines.append("    end")
+    # ── ARM / Intel share the same resource layout, differing only by platform ──
+    for on_block, platform in (("on_arm", "macos-arm64"), ("on_intel", "macos-amd64")):
+        lines.append(f"  {on_block} do")
+        lines.append(f'    url "{rel_url("clang-format", ver, platform, release_tag)}"')
+        lines.append(f'    sha256 "{sha(sha_map, "clang-format", ver, platform)}"')
         lines.append("")
 
-    if include_cleaner:
-        lines.append('    resource "clang-include-cleaner" do')
-        lines.append(f'      url "{rel_url("clang-include-cleaner", ver, "macos-arm64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, "clang-include-cleaner", ver, "macos-arm64")}"')
-        lines.append("    end")
+        for tool in resource_tools:
+            lines.append(f'    resource "{tool}" do')
+            lines.append(f'      url "{rel_url(tool, ver, platform, release_tag)}"')
+            lines.append(f'      sha256 "{sha(sha_map, tool, ver, platform)}"')
+            lines.append("    end")
+            lines.append("")
+
+        lines.append("  end")
         lines.append("")
-
-    lines.append("  end")
-    lines.append("")
-
-    # ── Intel ──
-    lines.append("  on_intel do")
-    lines.append(f'    url "{rel_url("clang-format", ver, "macos-amd64", release_tag)}"')
-    lines.append(f'    sha256 "{sha(sha_map, "clang-format", ver, "macos-amd64")}"')
-    lines.append("")
-
-    for tool in ["clang-tidy", "clang-query", "clang-apply-replacements"]:
-        lines.append(f'    resource "{tool}" do')
-        lines.append(f'      url "{rel_url(tool, ver, "macos-amd64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, tool, ver, "macos-amd64")}"')
-        lines.append("    end")
-        lines.append("")
-
-    if include_cleaner:
-        lines.append('    resource "clang-include-cleaner" do')
-        lines.append(f'      url "{rel_url("clang-include-cleaner", ver, "macos-amd64", release_tag)}"')
-        lines.append(f'      sha256 "{sha(sha_map, "clang-include-cleaner", ver, "macos-amd64")}"')
-        lines.append("    end")
-        lines.append("")
-
-    lines.append("  end")
-    lines.append("")
 
     # ── Install method ──
+    install_list = " ".join(resource_tools)
     lines.append("  def install")
     lines.append('    # Install the main binary (clang-format)')
     lines.append('    bin.install Dir["clang-format-*"].first => "clang-format"')
     lines.append("")
     lines.append("    # Install tool resources")
-    lines.append("    %w[clang-tidy clang-query clang-apply-replacements clang-include-cleaner].each do |tool|")
+    lines.append(f"    %w[{install_list}].each do |tool|")
     lines.append("      next unless resource(tool)")
     lines.append("      resource(tool).stage do")
     lines.append('        bin.install Dir["*"].first => tool')
@@ -192,11 +203,11 @@ def generate_bundle_formula(
     lines.append("")
 
     # ── Test ──
+    # clang-include-cleaner is intentionally not smoke-tested (it is version-gated).
+    test_tools = ["clang-format"] + [t for t in resource_tools if t != "clang-include-cleaner"]
     lines.append("  test do")
-    lines.append('    system "#{bin}/clang-format", "--version"')
-    lines.append('    system "#{bin}/clang-tidy", "--version"')
-    lines.append('    system "#{bin}/clang-query", "--version"')
-    lines.append('    system "#{bin}/clang-apply-replacements", "--version"')
+    for tool in test_tools:
+        lines.append(f'    system "#{{bin}}/{tool}", "--version"')
     lines.append("  end")
     lines.append("end")
     lines.append("")
@@ -277,7 +288,7 @@ def main() -> None:
 
     # All tools that may exist per version
     for ver in VERSIONS:
-        all_tools_for_ver = TOOLS_ALL + (TOOLS_IC if ver >= 18 else [])
+        all_tools_for_ver = TOOLS_ALL + (TOOLS_IC if ver >= 18 else []) + TOOLS_EXTRA
         for tool in all_tools_for_ver:
             for platform in PLATFORMS:
                 name = asset_name(tool, ver, platform)
