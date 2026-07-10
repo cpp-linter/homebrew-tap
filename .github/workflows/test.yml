@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'Formula/*.rb'
+  workflow_dispatch:
 
 env:
   # Suppress tap trust warnings for untrusted taps (e.g., aws/tap) on the runner
