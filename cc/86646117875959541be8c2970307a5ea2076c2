@@ -1,0 +1,19 @@
+.github/workflows/test.yml
+  s_451143dc76503e::t_608adbd1a1066c 28-29,57-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "cc86646117875959541be8c2970307a5ea2076c2",
+  "prompts": {},
+  "sessions": {
+    "s_451143dc76503e": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019f4968-eac3-7e0d-833d-714bf4f3adf2",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
