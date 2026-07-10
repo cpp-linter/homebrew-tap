@@ -25,8 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-13
-            arch: Intel (x86_64)
+          - os: macos-15
+            arch: Apple Silicon (arm64)
           - os: macos-latest
             arch: Apple Silicon (arm64)
     steps:
@@ -54,8 +54,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-13
-            arch: Intel (x86_64)
+          - os: macos-15
+            arch: Apple Silicon (arm64)
           - os: macos-latest
             arch: Apple Silicon (arm64)
         formula:
