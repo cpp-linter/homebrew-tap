@@ -46,7 +46,10 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet -- 'Formula/*.rb'; then
+          # Use `git status --porcelain` rather than `git diff`: when VERSIONS
+          # gains a new LLVM release the script *creates* Formula/*@<new>.rb,
+          # and those files are untracked — `git diff` does not see them.
+          if [ -z "$(git status --porcelain -- Formula)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
