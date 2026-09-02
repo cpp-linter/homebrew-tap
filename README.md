@@ -31,14 +31,14 @@ brew tap cpp-linter/tap
 ### Install all tools (bundle)
 
 ```bash
-# Install the latest version (currently LLVM 22)
+# Install the latest version (currently LLVM 23)
 brew install clang-tools
 
 # Install a specific version
+brew install clang-tools@22
 brew install clang-tools@21
 brew install clang-tools@20
 brew install clang-tools@19
-brew install clang-tools@18
 ```
 
 ### Install individual tools
@@ -58,9 +58,9 @@ brew install llvm-profdata             # profile data tool
 brew install llvm-symbolizer           # symbolizer for sanitizers / logs
 
 # Specific older versions (append @<version>)
-brew install clang-format@18
-brew install clang-tidy@19
-brew install clang-query@20
+brew install clang-format@19
+brew install clang-tidy@20
+brew install clang-query@21
 # ... etc.
 ```
 

@@ -28,7 +28,7 @@ from pathlib import Path
 
 OWNER = "cpp-linter"
 REPO = "clang-tools-static-binaries"
-VERSIONS = [22, 21, 20, 19, 18]
+VERSIONS = [23, 22, 21, 20, 19]
 
 # Every tool shipped in an upstream release, in the order they appear in the
 # generated formulae. `min_version` gates a tool to the LLVM releases that
