@@ -4,13 +4,13 @@ class LlvmCovAT18 < Formula
   version "18"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-cov-18_macos-arm64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/llvm-cov-18_macos-arm64"
     sha256 "1da632171ebac83d1b24917b573c9ce220f3236fb3e32ec69708f99fbcb719aa"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-cov-18_macos-amd64"
-    sha256 "73987cf4564678cf0606c81085cdf4c530acc0e4940cc7234c8b96ecadc0fd73"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/llvm-cov-18_macos-amd64"
+    sha256 "e4f7f87d7d020827681acc8bcc45a229264c4681a064721dd9b5c78002c6dc27"
   end
 
   def install

@@ -4,13 +4,13 @@ class ClangTidyAT19 < Formula
   version "19"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-tidy-19_macos-arm64"
-    sha256 "73febf03a21625301154e0951491164a59e5c8f1e0a1dee39d9cffb26a21121e"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-tidy-19_macos-arm64"
+    sha256 "a245183e4d389728e7d0f23caf0b978f1bd3c6ceebfa92ef7d38d16715abf78c"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-tidy-19_macos-amd64"
-    sha256 "3e4be9c6ecdfeed6732b2fa4b63ed80b3aeead126e9414d637b207f2f9485e7b"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-tidy-19_macos-amd64"
+    sha256 "189ab766da41a275e0a113a5d40359bb6a76a557748d88ed524751919015f615"
   end
 
   def install
