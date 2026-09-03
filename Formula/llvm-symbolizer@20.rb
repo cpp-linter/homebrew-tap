@@ -4,13 +4,13 @@ class LlvmSymbolizerAT20 < Formula
   version "20"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-symbolizer-20_macos-arm64"
-    sha256 "813b9e2e18a9c3634ce23f469ca7065cb6e95b9b995be3ed0853d2828d98c11f"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/llvm-symbolizer-20_macos-arm64"
+    sha256 "a9a279d2b2093360cbfe687689f27d507fc88eac5301f5216847cce666c4d925"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-symbolizer-20_macos-amd64"
-    sha256 "05df263f415804ad3db606e82a5015b0ab697ad40e62f3469b6302f1674a541a"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/llvm-symbolizer-20_macos-amd64"
+    sha256 "e36634644f91b809cab97b3c8b8f030d36e4af27d30ea4ef75be669233e87993"
   end
 
   def install

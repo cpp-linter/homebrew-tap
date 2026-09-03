@@ -1,16 +1,16 @@
 class ClangFormat < Formula
   desc "Static binary for clang-format"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "22"
+  version "23"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-format-22_macos-arm64"
-    sha256 "eed04ce5a8994c5163d917ecccbb4fce2d5d73982b8d86df33ffe85f6108c548"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-format-23_macos-arm64"
+    sha256 "d96a0b91b3e5b4cf838dab660dc9377a0083a5c04fb4ffb9ba75d09a727586c2"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-format-22_macos-amd64"
-    sha256 "7efc86a20c578a5c771e534eb12f3cc0e1025b125aa467745f647b3d95b232ab"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-format-23_macos-amd64"
+    sha256 "bd0701417baa228078e19f4d84b3ef276bc18425154e0dc87b647946424b7862"
   end
 
   def install

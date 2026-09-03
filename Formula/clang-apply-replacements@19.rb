@@ -4,13 +4,13 @@ class ClangApplyReplacementsAT19 < Formula
   version "19"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-apply-replacements-19_macos-arm64"
-    sha256 "6b59690a2279e1fade60444b011a0f49a43516b4d378cd1e0b39b7a1207be958"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-apply-replacements-19_macos-arm64"
+    sha256 "4d4c635ce852d319babb5ffcf617f511ac7ce52ae8b427511fe45bd0ad3e0f6d"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-apply-replacements-19_macos-amd64"
-    sha256 "6b62e12fa1a39a07b0c6b0492db034c6535e4711c77e6e6e75e32c77dd546460"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-apply-replacements-19_macos-amd64"
+    sha256 "9055977e4c6b9276865b91f8386b4e0a9f8ec8f83f341caf5c5a759565f2a0ce"
   end
 
   def install

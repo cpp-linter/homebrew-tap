@@ -4,13 +4,13 @@ class LlvmProfdataAT19 < Formula
   version "19"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-profdata-19_macos-arm64"
-    sha256 "e12b9a1f5161324bf88a3d75af78106067ec2641b858828895965b1f6334f82a"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/llvm-profdata-19_macos-arm64"
+    sha256 "93019ea7380e16cdeb38ede95707fdfbbbde18d5f375e3a516b7525ac7996efc"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/llvm-profdata-19_macos-amd64"
-    sha256 "97fd096cdd2a5fef5cda5638212d8fd17da4f2bb3139d28be34620ce203f36f6"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/llvm-profdata-19_macos-amd64"
+    sha256 "c8e02ea59781e6b053b358dfa76efab5fedca3ee2e216785c4aae157d6f5e072"
   end
 
   def install
