@@ -4,13 +4,13 @@ class ClangScanDepsAT19 < Formula
   version "19"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-scan-deps-19_macos-arm64"
-    sha256 "6ffcf61496b720ecd7a710d1e95d1af930016b1976c26db47bdeb8facc5fabc9"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-scan-deps-19_macos-arm64"
+    sha256 "48da97805b3963f6bce1f907c76d308b8425cb20b93c8c244ff3402b8f9767f8"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.07.02-e6fa8f6a/clang-scan-deps-19_macos-amd64"
-    sha256 "1be51f8d70402ff9edebddc3001a75aa2d660153db7d394aa40c3a37264622f5"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/2026.09.01-5fb8802d/clang-scan-deps-19_macos-amd64"
+    sha256 "0e39e0c3d0dcc57fde84af9a12ff3fd87a6e77f6e0ca7010c99b1b3f084b286f"
   end
 
   def install
