@@ -23,22 +23,27 @@ No compilation required — binaries are downloaded directly from GitHub Release
 
 ## Installation
 
-```bash
-# Add the tap
-brew tap cpp-linter/tap
-```
+Install with the full `cpp-linter/tap/<formula>` name. Homebrew adds the tap and
+trusts the formula you named, so no other step is needed.
+
+> [!IMPORTANT]
+> Short names such as `brew install clang-tidy` need `brew tap cpp-linter/tap`
+> **and** `brew trust cpp-linter/tap` first: since Homebrew 6, formulae from
+> third-party taps are not loaded until they are trusted. `clang-format` is also
+> a Homebrew core formula, so `brew install clang-format` installs that one
+> instead of this tap's. Write `cpp-linter/tap/clang-format`.
 
 ### Install all tools (bundle)
 
 ```bash
 # Install the latest version (currently LLVM 23)
-brew install clang-tools
+brew install cpp-linter/tap/clang-tools
 
 # Install a specific version
-brew install clang-tools@22
-brew install clang-tools@21
-brew install clang-tools@20
-brew install clang-tools@19
+brew install cpp-linter/tap/clang-tools@22
+brew install cpp-linter/tap/clang-tools@21
+brew install cpp-linter/tap/clang-tools@20
+brew install cpp-linter/tap/clang-tools@19
 ```
 
 ### Install individual tools
@@ -47,20 +52,20 @@ Install only what you need:
 
 ```bash
 # Latest versions
-brew install clang-format              # code formatter
-brew install clang-tidy                # linter / static analyzer
-brew install clang-query               # AST query tool
-brew install clang-apply-replacements  # apply clang-tidy fixes
-brew install clang-include-cleaner     # remove unused headers (LLVM 18+)
-brew install clang-scan-deps           # dependency scanner for modules
-brew install llvm-cov                  # code coverage reporting
-brew install llvm-profdata             # profile data tool
-brew install llvm-symbolizer           # symbolizer for sanitizers / logs
+brew install cpp-linter/tap/clang-format              # code formatter
+brew install cpp-linter/tap/clang-tidy                # linter / static analyzer
+brew install cpp-linter/tap/clang-query               # AST query tool
+brew install cpp-linter/tap/clang-apply-replacements  # apply clang-tidy fixes
+brew install cpp-linter/tap/clang-include-cleaner     # remove unused headers (LLVM 18+)
+brew install cpp-linter/tap/clang-scan-deps           # dependency scanner for modules
+brew install cpp-linter/tap/llvm-cov                  # code coverage reporting
+brew install cpp-linter/tap/llvm-profdata             # profile data tool
+brew install cpp-linter/tap/llvm-symbolizer           # symbolizer for sanitizers / logs
 
 # Specific older versions (append @<version>)
-brew install clang-format@19
-brew install clang-tidy@20
-brew install clang-query@21
+brew install cpp-linter/tap/clang-format@19
+brew install cpp-linter/tap/clang-tidy@20
+brew install cpp-linter/tap/clang-query@21
 # ... etc.
 ```
 
@@ -107,13 +112,13 @@ The SHA-256 checksums are verified during installation.
 
 ```bash
 brew update
-brew upgrade clang-tools
+brew upgrade cpp-linter/tap/clang-tools
 ```
 
 To update a single tool:
 
 ```bash
-brew upgrade clang-format
+brew upgrade cpp-linter/tap/clang-format
 ```
 
 ## Development
