@@ -1,0 +1,21 @@
+LICENSE
+  s_0da9b18608c2a0::t_68d56d17588fcf 1-21
+README.md
+  s_0da9b18608c2a0::t_d71396a5fabb52 1,3-4,6,8,10,12-14,26,28,31,36,43-50,52,55,58-64,72,74-78,81,84-85,87,89-92,101-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "4749fe6c0ab721ccf459fa55c3fe47a045721b79",
+  "prompts": {},
+  "sessions": {
+    "s_0da9b18608c2a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c1ae0c79-9ddb-4e6b-a8e1-2213cfd3c2b6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
