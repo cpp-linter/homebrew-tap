@@ -1,16 +1,16 @@
 class LlvmCovAT22 < Formula
   desc "Static binary for llvm-cov"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "22.1.0"
+  version "22.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/llvm-cov-22_macos-arm64"
-    sha256 "4592b8cebe0e1f72ba31d85d5a1787e5aeded5e5ba7d6d42375a9e80a78a5d04"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/llvm-cov-22_macos-arm64"
+    sha256 "3986cf743790376406ba99b1020d8e00f028ed023aa64f8fde47bad6794fc3bd"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/llvm-cov-22_macos-amd64"
-    sha256 "d278591768568a4c1075f64d1844e0735969d8feaa91222eafca4edc15f07487"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/llvm-cov-22_macos-amd64"
+    sha256 "45ffc02717627a416c230093a1a31f71dbc5994c4ed2f93a0dff52ff9e09b173"
   end
 
   def install

@@ -1,16 +1,16 @@
 class LlvmSymbolizerAT22 < Formula
   desc "Static binary for llvm-symbolizer"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "22.1.0"
+  version "22.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/llvm-symbolizer-22_macos-arm64"
-    sha256 "f993c8570d26f73af65fa8c09de75d2f8856a14e9a4526a940f3ab0a86538020"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/llvm-symbolizer-22_macos-arm64"
+    sha256 "83996f38a9c356dd6533ec2a1cb1b5761807e3febf8f00846534b38ead7443a7"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/llvm-symbolizer-22_macos-amd64"
-    sha256 "c1adc3a89f9d2f02f986ff75555d6628e74a5d3cc8a090ddd5e4c6b7c96827fb"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/llvm-symbolizer-22_macos-amd64"
+    sha256 "0ce054ccfc5c29ff79786dbfe5dab4c755cedebe5c85ed2a930e98a44e3394d7"
   end
 
   def install
