@@ -87,19 +87,22 @@ time, because they have the same name.
 ## Maintaining this tap
 
 The [Update Formula](https://github.com/cpp-linter/homebrew-tap/actions/workflows/update-formula.yml)
-workflow runs daily and opens a pull request when a new
-[clang-tools-static-binaries release](https://github.com/cpp-linter/clang-tools-static-binaries/releases)
-changes the formulae. To update them by hand:
+workflow runs daily and opens a pull request when the
+[clang-tools-static-binaries index](https://cpp-linter.github.io/clang-tools-static-binaries/)
+changes the formulae. The index lists one release per LLVM version, so each formula points at
+its own version's release. To update them by hand:
 
 ```bash
-bash scripts/update-formula.sh <release-tag>
+bash scripts/update-formula.sh
 ```
 
 This will regenerate all `Formula/*.rb` files (both bundle and individual tool
-formulae) with the correct URLs and SHA-256 checksums.
+formulae) with the correct URLs and SHA-256 checksums, after checking each binary
+against the SHA-512 in the index.
 
-The LLVM versions come from `VERSIONS` in `scripts/update-formula.py`. The script never deletes
-formulae, so remove the files of a version that leaves `VERSIONS`.
+Every LLVM version in the index from `MIN_VERSION` in `scripts/update-formula.py` up gets a
+formula, and the newest one gets the unversioned name. The script never deletes formulae, so
+remove the files of a version that leaves the index.
 
 ## Contributing
 

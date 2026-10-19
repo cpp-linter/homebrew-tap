@@ -3,20 +3,23 @@
 update-formula.py — Regenerate Homebrew formulae for clang-tools.
 
 Usage:
-    python3 scripts/update-formula.py <release-tag>
-
-Example:
-    python3 scripts/update-formula.py 2026.06.15-a56c0263
+    python3 scripts/update-formula.py
 
 This script:
-  1. Downloads SHA256 checksums for all tool binaries from the given release
-  2. Regenerates bundle formulae (clang-tools.rb, clang-tools@<ver>.rb)
-  3. Regenerates individual tool formulae (clang-format.rb, clang-format@<ver>.rb, etc.)
+  1. Reads the static binaries' index.json, which lists one release per LLVM
+     version with the URL and SHA-512 of every binary
+  2. Downloads each macOS binary, checks its SHA-512 and computes the SHA-256
+     that Homebrew needs
+  3. Regenerates bundle formulae (clang-tools.rb, clang-tools@<ver>.rb)
+  4. Regenerates individual tool formulae (clang-format.rb, clang-format@<ver>.rb, etc.)
+
+Set INDEX_URL to read another index (for example a local file:// copy).
 """
 
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import sys
 import tempfile
@@ -28,7 +31,14 @@ from pathlib import Path
 
 OWNER = "cpp-linter"
 REPO = "clang-tools-static-binaries"
-VERSIONS = [23, 22, 21, 20, 19]
+INDEX_URL = os.environ.get(
+    "INDEX_URL", f"https://{OWNER}.github.io/{REPO}/index.json"
+)
+INDEX_SCHEMA_VERSION = 1
+
+# The oldest LLVM version that gets a formula. Every newer version listed in
+# the index gets one too, so a new LLVM release is picked up automatically.
+MIN_VERSION = 19
 
 # Every tool shipped in an upstream release, in the order they appear in the
 # generated formulae. `min_version` gates a tool to the LLVM releases that
@@ -85,38 +95,52 @@ def formula_class(name: str, version: int | None = None, is_latest: bool = True)
     return base if is_latest else f"{base}AT{version}"
 
 
-# ── Checksum helpers ───────────────────────────────────────────────────────
+# ── Index helpers ──────────────────────────────────────────────────────────
 
 
-def sha256_of_url(url: str) -> str | None:
-    """Download a URL and return its SHA-256 hex digest, or None on failure."""
-    try:
-        with urllib.request.urlopen(url, timeout=30) as resp:
-            data = resp.read()
-        return hashlib.sha256(data).hexdigest()
-    except Exception:
-        return None
+def fetch_index(url: str = INDEX_URL) -> dict:
+    """Download and check the static binaries' index.json."""
+    with urllib.request.urlopen(url, timeout=30) as resp:
+        index = json.load(resp)
+    if not isinstance(index, dict) or index.get("schema_version") != INDEX_SCHEMA_VERSION:
+        sys.exit(f"Unsupported index at {url}; update this script.")
+    return index
+
+
+def formula_version(entry: dict) -> str:
+    """The formula version of an index entry: its release tag without `llvm-`.
+
+    A rebuilt release (e.g. `llvm-22.1.8-2`) gets a new version, so Homebrew
+    upgrades to it.
+    """
+    return entry["tag"].removeprefix("llvm-")
+
+
+def sha256_of_binary(url: str, sha512: str) -> str:
+    """Download a binary, check it against the index's SHA-512 and return its SHA-256."""
+    h256, h512 = hashlib.sha256(), hashlib.sha512()
+    with urllib.request.urlopen(url, timeout=120) as resp:
+        while chunk := resp.read(1 << 20):
+            h256.update(chunk)
+            h512.update(chunk)
+    if h512.hexdigest() != sha512.lower():
+        sys.exit(f"SHA-512 mismatch for {url}")
+    return h256.hexdigest()
 
 
 def asset_name(tool: str, version: int, platform: str) -> str:
-    """Construct the GitHub release asset name for a tool binary."""
+    """The release asset name of a tool binary."""
     return f"{tool}-{version}_{platform}"
-
-
-def asset_url(tool: str, version: int, platform: str, release_tag: str) -> str:
-    name = asset_name(tool, version, platform)
-    return f"https://github.com/{OWNER}/{REPO}/releases/download/{release_tag}/{name}"
 
 
 def sha(sha_map: dict[str, str], tool: str, version: int, platform: str) -> str:
     """Look up the SHA-256 for a given tool/version/platform."""
-    key = asset_name(tool, version, platform)
-    return sha_map.get(key, "")
+    return sha_map[asset_name(tool, version, platform)]
 
 
-def rel_url(tool: str, version: int, platform: str, release_tag: str) -> str:
-    """Shortcut for asset_url."""
-    return asset_url(tool, version, platform, release_tag)
+def rel_url(entry: dict, tool: str, platform: str) -> str:
+    """The download URL of a tool binary, as listed in the index."""
+    return entry["tools"][tool][platform]["url"]
 
 
 # ── Bundle formula (clang-tools) ───────────────────────────────────────────────
@@ -124,7 +148,7 @@ def rel_url(tool: str, version: int, platform: str, release_tag: str) -> str:
 
 def generate_bundle_formula(
     version: int,
-    release_tag: str,
+    entry: dict,
     sha_map: dict[str, str],
     is_latest: bool,
 ) -> str:
@@ -143,19 +167,19 @@ def generate_bundle_formula(
     lines.append(f"class {class_name} < Formula")
     lines.append(f'  desc "Static binaries for {tools_desc}"')
     lines.append(f"  homepage \"https://github.com/{OWNER}/{REPO}\"")
-    lines.append(f'  version "{ver}"')
+    lines.append(f'  version "{formula_version(entry)}"')
     lines.append("")
 
     # ── ARM / Intel share the same resource layout, differing only by platform ──
     for on_block, platform in (("on_arm", "macos-arm64"), ("on_intel", "macos-amd64")):
         lines.append(f"  {on_block} do")
-        lines.append(f'    url "{rel_url(PRIMARY_TOOL, ver, platform, release_tag)}"')
+        lines.append(f'    url "{rel_url(entry, PRIMARY_TOOL, platform)}"')
         lines.append(f'    sha256 "{sha(sha_map, PRIMARY_TOOL, ver, platform)}"')
         lines.append("")
 
         for tool in resource_tools:
             lines.append(f'    resource "{tool}" do')
-            lines.append(f'      url "{rel_url(tool, ver, platform, release_tag)}"')
+            lines.append(f'      url "{rel_url(entry, tool, platform)}"')
             lines.append(f'      sha256 "{sha(sha_map, tool, ver, platform)}"')
             lines.append("    end")
             lines.append("")
@@ -201,7 +225,7 @@ def generate_bundle_formula(
 def generate_individual_formula(
     tool: str,
     version: int,
-    release_tag: str,
+    entry: dict,
     sha_map: dict[str, str],
     is_latest: bool,
 ) -> str:
@@ -215,19 +239,19 @@ def generate_individual_formula(
     lines.append(f"class {class_name} < Formula")
     lines.append(f'  desc "{desc}"')
     lines.append(f"  homepage \"https://github.com/{OWNER}/{REPO}\"")
-    lines.append(f'  version "{ver}"')
+    lines.append(f'  version "{formula_version(entry)}"')
     lines.append("")
 
     # ── ARM ──
     lines.append("  on_arm do")
-    lines.append(f'    url "{rel_url(tool, ver, "macos-arm64", release_tag)}"')
+    lines.append(f'    url "{rel_url(entry, tool, "macos-arm64")}"')
     lines.append(f'    sha256 "{sha(sha_map, tool, ver, "macos-arm64")}"')
     lines.append("  end")
     lines.append("")
 
     # ── Intel ──
     lines.append("  on_intel do")
-    lines.append(f'    url "{rel_url(tool, ver, "macos-amd64", release_tag)}"')
+    lines.append(f'    url "{rel_url(entry, tool, "macos-amd64")}"')
     lines.append(f'    sha256 "{sha(sha_map, tool, ver, "macos-amd64")}"')
     lines.append("  end")
     lines.append("")
@@ -252,66 +276,66 @@ def generate_individual_formula(
 
 
 def main() -> None:
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <release-tag>")
-        print("Example: python3 scripts/update-formula.py 2026.06.15-a56c0263")
+    if len(sys.argv) != 1:
+        print(f"Usage: {sys.argv[0]}  (set INDEX_URL to read another index)")
         sys.exit(1)
 
-    release_tag = sys.argv[1]
+    print(f":: Reading {INDEX_URL} ...")
+    index = fetch_index()
+    entries = {
+        int(major): entry
+        for major, entry in index["versions"].items()
+        if int(major) >= MIN_VERSION
+    }
+    versions = sorted(entries, reverse=True)
+    if not versions:
+        sys.exit(f"The index lists no LLVM version >= {MIN_VERSION}.")
 
-    print(f":: Fetching checksums from release {release_tag} ...")
-
-    # Collect SHA-256 for every asset shipped by each version.
+    print(":: Checking binaries and computing SHA-256 checksums ...")
     sha_map: dict[str, str] = {}
-
-    for ver in VERSIONS:
+    for ver in versions:
+        entry = entries[ver]
         for tool in tools_for_version(ver):
             for platform in PLATFORMS:
                 name = asset_name(tool, ver, platform)
-                url = asset_url(tool, ver, platform, release_tag)
-                s = sha256_of_url(url)
-                if s:
-                    sha_map[name] = s
-                    print(f"  ✓ {name}")
-                else:
-                    print(f"  ✗ {name} (not found, skipping)")
+                try:
+                    file = entry["tools"][tool][platform]
+                except KeyError:
+                    sys.exit(f"{entry['tag']} has no {name} in the index.")
+                sha_map[name] = sha256_of_binary(file["url"], file["sha512"])
+                print(f"  ✓ {name} ({entry['tag']})")
 
     print()
     print(":: Generating bundle formulae (clang-tools) ...")
 
     FORMULA_DIR.mkdir(parents=True, exist_ok=True)
 
-    for i, ver in enumerate(VERSIONS):
+    for i, ver in enumerate(versions):
         is_latest = (i == 0)
         formula_name = "clang-tools.rb" if is_latest else f"clang-tools@{ver}.rb"
         formula_path = FORMULA_DIR / formula_name
 
-        content = generate_bundle_formula(ver, release_tag, sha_map, is_latest)
+        content = generate_bundle_formula(ver, entries[ver], sha_map, is_latest)
         formula_path.write_text(content)
         print(f"  ✓ {formula_name}")
 
     print()
     print(":: Generating individual tool formulae ...")
 
-    for i, ver in enumerate(VERSIONS):
+    for i, ver in enumerate(versions):
         is_latest = (i == 0)
         for tool in tools_for_version(ver):
             formula_name = f"{tool}.rb" if is_latest else f"{tool}@{ver}.rb"
             formula_path = FORMULA_DIR / formula_name
 
-            content = generate_individual_formula(tool, ver, release_tag, sha_map, is_latest)
+            content = generate_individual_formula(tool, ver, entries[ver], sha_map, is_latest)
             formula_path.write_text(content)
             print(f"  ✓ {formula_name}")
 
     print()
     rb_files = sorted(FORMULA_DIR.glob("*.rb"))
     print(f":: Done! Generated {len(rb_files)} formula files.")
-    print(f"   Release tag: {release_tag}")
-    print()
-    print("Next steps:")
-    print("  1. Review the generated formulae: git diff")
-    print('  2. Commit and push: git add Formula/ && git commit -m "chore: update formulae to {release_tag}"')
-    print("  3. Tag the release if needed")
+    print("   Releases: " + ", ".join(entries[v]["tag"] for v in versions))
 
 
 if __name__ == "__main__":
