@@ -1,16 +1,16 @@
 class ClangApplyReplacementsAT22 < Formula
   desc "Static binary for clang-apply-replacements"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "22.1.0"
+  version "22.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/clang-apply-replacements-22_macos-arm64"
-    sha256 "6b714d0372b2fe5f267338d455f38d722497b3a44ac353892cdb87a276af6eec"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/clang-apply-replacements-22_macos-arm64"
+    sha256 "ad93fe72e676efba7518628180d941a6ac0674cdaa24dd8ef56e3f000a765c4d"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/clang-apply-replacements-22_macos-amd64"
-    sha256 "ece6722eefc69020585ff43a18bab34817f9a40a23265d68d9713184873de275"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/clang-apply-replacements-22_macos-amd64"
+    sha256 "431ef5163d69c54aeba3fa28679382efec8350dbc248e3e0cbbce2df9a8594d1"
   end
 
   def install

@@ -1,16 +1,16 @@
 class LlvmProfdataAT22 < Formula
   desc "Static binary for llvm-profdata"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "22.1.0"
+  version "22.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/llvm-profdata-22_macos-arm64"
-    sha256 "59a5c3e16d277961b2ba1e8870a8610c8827ae6572b6a7c171269cc64bf6db8d"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/llvm-profdata-22_macos-arm64"
+    sha256 "906a2bd0634a1f4337b879542c4a3974f8d6ba86fec40af7e6fc11c9d904d3a9"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/llvm-profdata-22_macos-amd64"
-    sha256 "378789f365b1246f615e99ae5c882a7db6fa45987779b012638d3347432f098d"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/llvm-profdata-22_macos-amd64"
+    sha256 "b5acc4f103418298f9ba656c9b1283bba4c7bfd4825e2b09fd07b96344bae50b"
   end
 
   def install

@@ -1,16 +1,16 @@
 class ClangQueryAT22 < Formula
   desc "Static binary for clang-query"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "22.1.0"
+  version "22.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/clang-query-22_macos-arm64"
-    sha256 "b7e9f3ccecd5f0dfd8550df0b6f59e554702148bfd630b068345550a8dae945a"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/clang-query-22_macos-arm64"
+    sha256 "c68fe31cb626f19dfe24a18e4e32136af0e9c5920d34048fac61212c135d253b"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.0/clang-query-22_macos-amd64"
-    sha256 "846ff356207ae799d8e9c57db4c461de08ef07089d73ccf565a8a0a29da02536"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8/clang-query-22_macos-amd64"
+    sha256 "2ef2587ba60262835454f3d5c53d8b9db51b57209f4331df2bf7ff0a38fe9fb3"
   end
 
   def install
