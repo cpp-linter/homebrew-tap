@@ -1,15 +1,15 @@
 class ClangScanDepsAT20 < Formula
   desc "Static binary for clang-scan-deps"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "20.1.0"
+  version "20.1.0-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0/clang-scan-deps-20_macos-arm64"
-    sha256 "0a9ee8a969ed67c924d9e2b2f5f1c75311265184467249d7016c9260fc5340ae"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0-2/clang-scan-deps-20_macos-arm64"
+    sha256 "90994fd8661a847ed686b24fdf9640b6d94e3ed68e9c43b9a0493a0adf57fb77"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0/clang-scan-deps-20_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0-2/clang-scan-deps-20_macos-amd64"
     sha256 "0a404e8e47fbe9ac28785229e5d8e5968b182602c3500fc239df87f1388a8e36"
   end
 
