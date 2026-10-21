@@ -1,15 +1,15 @@
 class LlvmCovAT20 < Formula
   desc "Static binary for llvm-cov"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "20.1.0"
+  version "20.1.0-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0/llvm-cov-20_macos-arm64"
-    sha256 "0a0f96f6a34217e4ead674b3a5a8fd3ddbe59dcfd490f9c8a82606c63d863ebf"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0-2/llvm-cov-20_macos-arm64"
+    sha256 "2bd1bbd7b96a62db9470953651966969f501af5a00f916cb73ac2a870061b8ca"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0/llvm-cov-20_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0-2/llvm-cov-20_macos-amd64"
     sha256 "72588b0ef696a7d61d74bbc04f3317c975132fb92552f4a8afb1c6a236de3925"
   end
 

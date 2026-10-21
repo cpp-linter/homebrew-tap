@@ -1,15 +1,15 @@
 class ClangApplyReplacementsAT19 < Formula
   desc "Static binary for clang-apply-replacements"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "19.1.0"
+  version "19.1.0-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.0/clang-apply-replacements-19_macos-arm64"
-    sha256 "4d4c635ce852d319babb5ffcf617f511ac7ce52ae8b427511fe45bd0ad3e0f6d"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.0-2/clang-apply-replacements-19_macos-arm64"
+    sha256 "b98577e05ae6131e736170845a6c1ff1984a33df8e3db0280757ee17cf6c9c5f"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.0/clang-apply-replacements-19_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.0-2/clang-apply-replacements-19_macos-amd64"
     sha256 "9055977e4c6b9276865b91f8386b4e0a9f8ec8f83f341caf5c5a759565f2a0ce"
   end
 
