@@ -14,6 +14,8 @@ env:
   # Suppress tap trust warnings for untrusted taps (e.g., aws/tap) on the runner
   HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
 
+permissions: {}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,6 +24,8 @@ jobs:
   test-combined:
     name: Test clang-tools (combined) on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +35,9 @@ jobs:
           - os: macos-latest
             arch: Apple Silicon (arm64)
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Tap and trust local repository
         run: |
@@ -51,6 +57,8 @@ jobs:
     name: Test ${{ matrix.formula }} on ${{ matrix.os }}
     needs: test-combined
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -65,7 +73,9 @@ jobs:
           - llvm-symbolizer
           - clang-scan-deps
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Tap and trust local repository
         run: |
@@ -74,9 +84,13 @@ jobs:
           brew trust cpp-linter/tap
 
       - name: Install ${{ matrix.formula }} (on ${{ matrix.arch }})
-        run: brew install ${{ matrix.formula }}
+        run: brew install "$FORMULA"
+        env:
+          FORMULA: ${{ matrix.formula }}
         timeout-minutes: 10
 
       - name: Test ${{ matrix.formula }} (on ${{ matrix.arch }})
-        run: brew test ${{ matrix.formula }}
+        run: brew test "$FORMULA"
+        env:
+          FORMULA: ${{ matrix.formula }}
         timeout-minutes: 5
