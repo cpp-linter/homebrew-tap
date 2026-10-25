@@ -1,96 +1,96 @@
 class ClangToolsAT21 < Formula
   desc "Static binaries for clang-format, clang-tidy, clang-query, clang-apply-replacements, clang-include-cleaner, llvm-cov, llvm-profdata, llvm-symbolizer, and clang-scan-deps"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "21.1.0-3"
+  version "21.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-format-21_macos-arm64"
-    sha256 "ea0d9c95188558ce25bf882365f988cfa606d5feefa27d3c71ce5b5a7457fec4"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-format-21_macos-arm64"
+    sha256 "b09a880d055b3dc25969248b2ae0cce45ae0d9551859a5ccb3b1d0fceb6f0fb4"
 
     resource "clang-tidy" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-tidy-21_macos-arm64"
-      sha256 "f7e3b4862b892de3c4512094bc18cd2403fa63f74bf8080b3d90cf3f5f95325b"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-tidy-21_macos-arm64"
+      sha256 "d94dbf5f3d8735d41518f2ac70798f8266dc358a0a91835e08c96dc84815a198"
     end
 
     resource "clang-query" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-query-21_macos-arm64"
-      sha256 "20995d0448e29fd707e11cf32a77e371b79de8b23e03f097a07ac98508b0a753"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-query-21_macos-arm64"
+      sha256 "dc2dc8e9d04ef1419a3386ef1d5a1c558e0c127d827b2972471f609defe63eda"
     end
 
     resource "clang-apply-replacements" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-apply-replacements-21_macos-arm64"
-      sha256 "317e0f92e87bc0b34fd51b78d582495472e4e7128bada4189b7ede103d8ef18c"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-apply-replacements-21_macos-arm64"
+      sha256 "ebe7d3e102146cd860ecd2a255bff33584cc06c1c61375faf4efc3e6960f2c03"
     end
 
     resource "clang-include-cleaner" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-include-cleaner-21_macos-arm64"
-      sha256 "3c0e6961478877e11f8f40f962819db4410737b986392e1d89d11ab39e016ced"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-include-cleaner-21_macos-arm64"
+      sha256 "ba64116a588a81ffcbcd0f8a1f7ce6f901c20424f9e232cf5553a72e0e25c78c"
     end
 
     resource "llvm-cov" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/llvm-cov-21_macos-arm64"
-      sha256 "1c7ad2dfebb6c76034541835d8bb88ca7ef2db8050ac61f1305153420d93f933"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/llvm-cov-21_macos-arm64"
+      sha256 "d57cf9740871b978a466a4cade3525345ed6f168bf540e64ab6b3bfad06efaf9"
     end
 
     resource "llvm-profdata" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/llvm-profdata-21_macos-arm64"
-      sha256 "2c2312b5137249a27699da356513d5df9953312f3a1154f335479d2e00b4e272"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/llvm-profdata-21_macos-arm64"
+      sha256 "d0edcec8a78dcf649dd7d557f8b8468ae7344e0556e2f934ead5d57dada81cde"
     end
 
     resource "llvm-symbolizer" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/llvm-symbolizer-21_macos-arm64"
-      sha256 "26029816ef5ba50c52c7e2e18f2e90e716f8fab614652852a9d8a1c843e7cccc"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/llvm-symbolizer-21_macos-arm64"
+      sha256 "3e61cf7b7e5258d9d27685c8e6a3ff7e130198afd3b883abee492dff4432d4c3"
     end
 
     resource "clang-scan-deps" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-scan-deps-21_macos-arm64"
-      sha256 "b142b6464f9784b9a0145c98c3ec42084c5df109c08297c907d66a90c7be7a26"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-scan-deps-21_macos-arm64"
+      sha256 "eab6835d335f38d4d7aab5cb1848e58162889902e765ae1d099ee733ba0adeb6"
     end
 
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-format-21_macos-amd64"
-    sha256 "8a9576ccebc2bb454ede3092274d294ff5edb23b0e453359475c3da1eb0d0e1e"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-format-21_macos-amd64"
+    sha256 "bd3af2c8319dfed7745e0cff4712dbe2c27bfdf6928bd979468177aba28aff37"
 
     resource "clang-tidy" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-tidy-21_macos-amd64"
-      sha256 "27aab84806c64f0b772644f2705c89bf9d5d083d48981610ba687f4da65cf223"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-tidy-21_macos-amd64"
+      sha256 "3424b4db0921471cbd5f56c834f9ea0bb9a6f6a946ecfa96c9147bba8ead935a"
     end
 
     resource "clang-query" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-query-21_macos-amd64"
-      sha256 "642cc1d7a3a36f5452b9478402466fbcc066af0bd5c33d6da6e7ec4cf13d17a4"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-query-21_macos-amd64"
+      sha256 "7b75eacc5b934fa15c9b97194c8ed53181e5173db0790a279f12cf45c4a105e5"
     end
 
     resource "clang-apply-replacements" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-apply-replacements-21_macos-amd64"
-      sha256 "d5384b76ec5507bd92f8f5407f54ab7eea479954987295c42f021413765658bc"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-apply-replacements-21_macos-amd64"
+      sha256 "250f949b940defdcef51b43f24eef99026697aa207f6f67651a7a6201f1a867f"
     end
 
     resource "clang-include-cleaner" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-include-cleaner-21_macos-amd64"
-      sha256 "7ce759363dd56d0f27d0b8a756354ca0a235e857585aab345b2974f2b7a055e7"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-include-cleaner-21_macos-amd64"
+      sha256 "b645d352a73479130d302d760906d67f27ffb2c3bbcec43746d665d8b1052cbd"
     end
 
     resource "llvm-cov" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/llvm-cov-21_macos-amd64"
-      sha256 "3c900a073cfcfd7d638f63fc6fe5ea9a3ff972feeabb695a11b3959d6e910e18"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/llvm-cov-21_macos-amd64"
+      sha256 "f0fb7fe714579d75decc4ec297a7b077c13ec52836cd814e0c03d42b100646cd"
     end
 
     resource "llvm-profdata" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/llvm-profdata-21_macos-amd64"
-      sha256 "21ee4e3a139aa5d9b011a72c85a4174012198e438be0b25c5d08fc1c115b412d"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/llvm-profdata-21_macos-amd64"
+      sha256 "1414c83e5172e0eb82051b53b178bebee909253f974f1c4b3c73a7b4db8edc2b"
     end
 
     resource "llvm-symbolizer" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/llvm-symbolizer-21_macos-amd64"
-      sha256 "1223dfc69af83bd02ea0c1704b22812e46c0503fc95cb63f27900f8c8fc960c3"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/llvm-symbolizer-21_macos-amd64"
+      sha256 "2d2546a83ae850d81e39764da842dfe4028eb0323cad78b3ff9bee2490de709c"
     end
 
     resource "clang-scan-deps" do
-      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.0-3/clang-scan-deps-21_macos-amd64"
-      sha256 "f3a485d53b2a2441e1719f26e8a5f9d631d35e3ba791f326e20f62b18c28b98a"
+      url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-scan-deps-21_macos-amd64"
+      sha256 "0e5ccd9ab044579ffee8e93c045fd42136a9180544fd5c17dff458aba9f471b7"
     end
 
   end

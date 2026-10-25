@@ -1,16 +1,16 @@
 class ClangApplyReplacementsAT20 < Formula
   desc "Static binary for clang-apply-replacements"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "20.1.0-3"
+  version "20.1.8"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0-3/clang-apply-replacements-20_macos-arm64"
-    sha256 "4b86b10a5ecbc5c86d734f68bd40cf2be817e88fd7d087cb9bbc2d1d21ab8b6c"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.8/clang-apply-replacements-20_macos-arm64"
+    sha256 "1343e932d54ab9331f61ede52a7a8042c38ebc5e0e0ae8826a392e7919ad3df5"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.0-3/clang-apply-replacements-20_macos-amd64"
-    sha256 "e3223bc439ee0b9ac1516f8e1900eec95a4ce4f38956b0dda097d0c9c59f4804"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-20.1.8/clang-apply-replacements-20_macos-amd64"
+    sha256 "ab39d045ee64a4dff72a63ec5c91dcd975e3b653d46d2b2f7845a46f034b05f6"
   end
 
   def install
