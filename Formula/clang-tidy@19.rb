@@ -1,16 +1,16 @@
 class ClangTidyAT19 < Formula
   desc "Static binary for clang-tidy"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "19.1.0-3"
+  version "19.1.7"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.0-3/clang-tidy-19_macos-arm64"
-    sha256 "c2af3dbcbe8708ec4629e155bd79c5c7c5ed635b61605b3dfd70b9807f4e6fbb"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7/clang-tidy-19_macos-arm64"
+    sha256 "4650c275df721ef884d5a3c737b37e2dcacede0fb3f8d8123c2d0b8ef161a9b5"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.0-3/clang-tidy-19_macos-amd64"
-    sha256 "189ab766da41a275e0a113a5d40359bb6a76a557748d88ed524751919015f615"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7/clang-tidy-19_macos-amd64"
+    sha256 "196f0cf12e045c4b394b86a5975276453d81f8998a7d6aeee6f99754b0e356f3"
   end
 
   def install
