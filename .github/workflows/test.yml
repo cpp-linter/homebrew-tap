@@ -4,15 +4,13 @@ on:
   pull_request:
     paths:
       - 'Formula/*.rb'
+      - '.github/workflows/test.yml'
   push:
     branches: [main]
     paths:
       - 'Formula/*.rb'
+      - '.github/workflows/test.yml'
   workflow_dispatch:
-
-env:
-  # Suppress tap trust warnings for untrusted taps (e.g., aws/tap) on the runner
-  HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
 
 permissions: {}
 
