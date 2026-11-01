@@ -1,16 +1,16 @@
 class ClangTidy < Formula
   desc "Static binary for clang-tidy"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "23.1.3-3"
+  version "23.1.4"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.3-3/clang-tidy-23_macos-arm64"
-    sha256 "30df9e18d61c9947004adaf5e6dfa40067818ebe9e2af8b4b8ac8c8515b1f59d"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.4/clang-tidy-23_macos-arm64"
+    sha256 "0cb59ace4a07b8c9151cca5f048ddf3ade06e986e68c23d0eda48299365bf7e0"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.3-3/clang-tidy-23_macos-amd64"
-    sha256 "8d82c0da4bd4fad8b02b9575d18cce72aa09fbe5aba0e076970882c4ca11d61c"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.4/clang-tidy-23_macos-amd64"
+    sha256 "7d326248dc099c99475b59925556dd029f1ede1c753d7f53ec2478fedfb26dec"
   end
 
   def install
