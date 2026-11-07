@@ -1,16 +1,16 @@
 class ClangIncludeCleaner < Formula
   desc "Static binary for clang-include-cleaner"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "23.1.4"
+  version "23.1.5"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.4/clang-include-cleaner-23_macos-arm64"
-    sha256 "56105456ab2f529ea7a99c942d8a4cb8dc31e073176aa6db232dae71c4de1af2"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-include-cleaner-23_macos-arm64"
+    sha256 "ccbe31589a50b188c65c09f4196e76b0042b6a4da16b4f0eaf7893cd20417b2a"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.4/clang-include-cleaner-23_macos-amd64"
-    sha256 "9f4a0579da2d80bde7a99b21f0ea1ca83ae14265c6551090edc2fcc32f643127"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-include-cleaner-23_macos-amd64"
+    sha256 "67de85c2ffd77bc9eea93ee94f767e421bbddbee0fdb0b5202494c0bc4e483ed"
   end
 
   def install
