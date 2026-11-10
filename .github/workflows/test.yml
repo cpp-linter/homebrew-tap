@@ -32,6 +32,8 @@ jobs:
             arch: Apple Silicon (arm64)
           - os: macos-latest
             arch: Apple Silicon (arm64)
+          - os: macos-15-intel
+            arch: Intel (x86_64)
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -60,12 +62,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: macos-15
-            arch: Apple Silicon (arm64)
-          - os: macos-latest
-            arch: Apple Silicon (arm64)
+        os:
+          - macos-15
+          - macos-latest
+          - macos-15-intel
         formula:
+          # These three get clang's builtin headers and a script that sets
+          # SDKROOT. clang-tidy@19 is the oldest version (MIN_VERSION in
+          # scripts/update-formula.py) and checks the headers of an old release.
+          - clang-tidy
+          - clang-tidy@19
+          - clang-query
+          - clang-include-cleaner
           - llvm-cov
           - llvm-profdata
           - llvm-symbolizer
@@ -81,13 +89,13 @@ jobs:
           brew tap cpp-linter/homebrew-tap "$PWD"
           brew trust cpp-linter/tap
 
-      - name: Install ${{ matrix.formula }} (on ${{ matrix.arch }})
+      - name: Install ${{ matrix.formula }}
         run: brew install "$FORMULA"
         env:
           FORMULA: ${{ matrix.formula }}
         timeout-minutes: 10
 
-      - name: Test ${{ matrix.formula }} (on ${{ matrix.arch }})
+      - name: Test ${{ matrix.formula }}
         run: brew test "$FORMULA"
         env:
           FORMULA: ${{ matrix.formula }}

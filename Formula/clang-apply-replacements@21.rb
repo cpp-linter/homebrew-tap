@@ -18,6 +18,6 @@ class ClangApplyReplacementsAT21 < Formula
   end
 
   test do
-    system "#{bin}/clang-apply-replacements", "--version"
+    system bin/"clang-apply-replacements", "--version"
   end
 end

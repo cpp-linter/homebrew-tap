@@ -18,6 +18,6 @@ class ClangFormatAT20 < Formula
   end
 
   test do
-    system "#{bin}/clang-format", "--version"
+    system bin/"clang-format", "--version"
   end
 end

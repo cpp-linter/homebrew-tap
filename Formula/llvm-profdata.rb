@@ -18,6 +18,6 @@ class LlvmProfdata < Formula
   end
 
   test do
-    system "#{bin}/llvm-profdata", "--version"
+    system bin/"llvm-profdata", "--version"
   end
 end

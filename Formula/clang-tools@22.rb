@@ -95,29 +95,61 @@ class ClangToolsAT22 < Formula
 
   end
 
-  def install
-    # Install the main binary (clang-format)
-    bin.install Dir["clang-format-*"].first => "clang-format"
+  resource "clang-resource-headers" do
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-22.1.8-3/clang-resource-headers-22.tar.gz"
+    sha256 "ee15874cdbfd2bf4702e3f9ee9c588f20a75e3791b0f084e04ac2bf421b2e94d"
+  end
 
-    # Install tool resources
+  def install
+    (libexec/"bin").install Dir["clang-format-*"].first => "clang-format"
     %w[clang-tidy clang-query clang-apply-replacements clang-include-cleaner llvm-cov llvm-profdata llvm-symbolizer clang-scan-deps].each do |tool|
-      next unless resource(tool)
       resource(tool).stage do
-        bin.install Dir["*"].first => tool
+        (libexec/"bin").install Dir["*"].first => tool
       end
-    rescue
-      # Skip if resource not defined (e.g., clang-include-cleaner < v18)
+    end
+    # clang looks for its builtin headers in ../lib/clang/<version>/include,
+    # relative to the executable in libexec/bin.
+    resource("clang-resource-headers").stage do
+      (libexec/"lib").install Dir["{lib/clang,clang}"].first
+    end
+
+    %w[clang-format clang-apply-replacements llvm-cov llvm-profdata llvm-symbolizer clang-scan-deps].each do |tool|
+      bin.install_symlink libexec/"bin"/tool
+    end
+    %w[clang-tidy clang-query clang-include-cleaner].each do |tool|
+      (bin/tool).write <<~SH
+        #!/bin/bash
+        # The C and C++ standard headers are in the macOS SDK. Upstream clang
+        # needs SDKROOT to find it; an SDKROOT that is already set is kept.
+        if [ -z "${SDKROOT:-}" ]; then
+          sdk="$(/usr/bin/xcrun --show-sdk-path 2>/dev/null)"
+          [ -n "$sdk" ] && export SDKROOT="$sdk"
+        fi
+        exec "#{libexec}/bin/#{tool}" "$@"
+      SH
+      chmod 0755, bin/tool
     end
   end
 
   test do
-    system "#{bin}/clang-format", "--version"
-    system "#{bin}/clang-tidy", "--version"
-    system "#{bin}/clang-query", "--version"
-    system "#{bin}/clang-apply-replacements", "--version"
-    system "#{bin}/llvm-cov", "--version"
-    system "#{bin}/llvm-profdata", "--version"
-    system "#{bin}/llvm-symbolizer", "--version"
-    system "#{bin}/clang-scan-deps", "--version"
+    system bin/"clang-format", "--version"
+    system bin/"clang-apply-replacements", "--version"
+    system bin/"llvm-cov", "--version"
+    system bin/"llvm-profdata", "--version"
+    system bin/"llvm-symbolizer", "--version"
+    system bin/"clang-scan-deps", "--version"
+    (testpath/"builtin.cpp").write <<~CPP
+      #include <limits.h>
+      #include <stdarg.h>
+      #include <stddef.h>
+      #include <stdint.h>
+
+      const size_t int_size = sizeof(int32_t);
+      const int positive = INT_MAX > 0;
+    CPP
+    flags = "-std=c++11 -ffreestanding -nostdlibinc"
+    refute_match "error:", shell_output("#{bin}/clang-tidy '--checks=-*,bugprone-*' builtin.cpp -- #{flags} 2>&1")
+    refute_match "error:", shell_output("#{bin}/clang-query -c 'match functionDecl()' builtin.cpp -- #{flags} 2>&1")
+    refute_match "error:", shell_output("#{bin}/clang-include-cleaner --print=changes builtin.cpp -- #{flags} 2>&1")
   end
 end
