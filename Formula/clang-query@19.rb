@@ -20,6 +20,8 @@ class ClangQueryAT19 < Formula
 
   def install
     (libexec/"bin").install Dir["clang-query-*"].first => "clang-query"
+    # Homebrew makes downloaded binaries executable in bin, but not here.
+    chmod 0755, Dir["#{libexec}/bin/*"]
     # clang looks for its builtin headers in ../lib/clang/<version>/include,
     # relative to the executable in libexec/bin.
     resource("clang-resource-headers").stage do

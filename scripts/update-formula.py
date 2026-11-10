@@ -198,6 +198,18 @@ def headers_resource_lines(entry: dict, sha_map: dict[str, str]) -> list[str]:
     ]
 
 
+def executable_lines() -> list[str]:
+    """Ruby that makes the binaries in libexec/bin executable.
+
+    A release asset is downloaded without the executable bit. Homebrew sets it
+    for binaries in bin, but leaves libexec as the formula installed it.
+    """
+    return [
+        "    # Homebrew makes downloaded binaries executable in bin, but not here.",
+        '    chmod 0755, Dir["#{libexec}/bin/*"]',
+    ]
+
+
 def install_headers_lines() -> list[str]:
     """Ruby that unpacks clang's builtin headers to libexec/lib/clang."""
     return [
@@ -322,6 +334,7 @@ def generate_bundle_formula(
     lines.append('        (libexec/"bin").install Dir["*"].first => tool')
     lines.append("      end")
     lines.append("    end")
+    lines += executable_lines()
     if has_headers:
         lines += install_headers_lines()
     lines.append("")
@@ -392,6 +405,7 @@ def generate_individual_formula(
     lines.append("  def install")
     if with_headers:
         lines.append(f'    (libexec/"bin").install Dir["{tool}-*"].first => "{tool}"')
+        lines += executable_lines()
         lines += install_headers_lines()
         lines += wrapper_lines([tool])
     else:

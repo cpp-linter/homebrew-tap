@@ -20,6 +20,8 @@ class ClangIncludeCleaner < Formula
 
   def install
     (libexec/"bin").install Dir["clang-include-cleaner-*"].first => "clang-include-cleaner"
+    # Homebrew makes downloaded binaries executable in bin, but not here.
+    chmod 0755, Dir["#{libexec}/bin/*"]
     # clang looks for its builtin headers in ../lib/clang/<version>/include,
     # relative to the executable in libexec/bin.
     resource("clang-resource-headers").stage do
