@@ -18,6 +18,6 @@ class LlvmCov < Formula
   end
 
   test do
-    system "#{bin}/llvm-cov", "--version"
+    system bin/"llvm-cov", "--version"
   end
 end

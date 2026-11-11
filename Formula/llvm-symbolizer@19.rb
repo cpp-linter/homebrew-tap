@@ -18,6 +18,6 @@ class LlvmSymbolizerAT19 < Formula
   end
 
   test do
-    system "#{bin}/llvm-symbolizer", "--version"
+    system bin/"llvm-symbolizer", "--version"
   end
 end

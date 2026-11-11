@@ -18,6 +18,6 @@ class ClangScanDepsAT19 < Formula
   end
 
   test do
-    system "#{bin}/clang-scan-deps", "--version"
+    system bin/"clang-scan-deps", "--version"
   end
 end

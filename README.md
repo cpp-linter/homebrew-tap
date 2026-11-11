@@ -42,6 +42,22 @@ brew install cpp-linter/tap/llvm-symbolizer           # symbolizer for sanitizer
 
 Append `@<version>` for a specific LLVM version, for example `cpp-linter/tap/clang-tools@21`.
 
+## Tools that parse code
+
+`clang-tidy`, `clang-query` and `clang-include-cleaner` read your code the way the compiler
+does, so they need two more things than the other tools:
+
+- **clang's builtin headers** (`stddef.h`, `stdarg.h`, ...). The formulae install them next to
+  the tool, in the place where clang looks for them.
+- **The macOS SDK**, which holds the C and C++ standard headers. Apple's clang finds it by
+  itself; clang built from upstream LLVM does not. The formulae install a small script as
+  `clang-tidy` (and the other two) that sets `SDKROOT` to the output of `xcrun --show-sdk-path`
+  and then runs the tool. An `SDKROOT` that you set yourself is kept.
+
+The SDK belongs to the Xcode version on your Mac, and an old LLVM version cannot always parse
+the C++ headers of a new SDK. If `clang-tidy@19` reports errors inside the SDK's own headers,
+use a newer LLVM version.
+
 ## Updating
 
 ```bash
