@@ -1,20 +1,20 @@
 class ClangQuery < Formula
   desc "Static binary for clang-query"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "23.1.5"
+  version "23.1.5-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-query-23_macos-arm64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5-2/clang-query-23_macos-arm64"
     sha256 "686932225106e089210e072a0422ea99b9b8b876914092c7acd59dfd186c6a69"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-query-23_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5-2/clang-query-23_macos-amd64"
     sha256 "c6bf94de9be769874120fbf3e52efcfda001eb3ba07dba5431d9aa578f588b86"
   end
 
   resource "clang-resource-headers" do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-resource-headers-23.tar.gz"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5-2/clang-resource-headers-23.tar.gz"
     sha256 "24e42ca18012fcd9e714c6eb5310fed870138dc48578121dc1282e27b43015ac"
   end
 
