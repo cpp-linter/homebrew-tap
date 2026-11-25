@@ -1,20 +1,20 @@
 class ClangIncludeCleanerAT21 < Formula
   desc "Static binary for clang-include-cleaner"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "21.1.8"
+  version "21.1.8-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-include-cleaner-21_macos-arm64"
-    sha256 "ba64116a588a81ffcbcd0f8a1f7ce6f901c20424f9e232cf5553a72e0e25c78c"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8-2/clang-include-cleaner-21_macos-arm64"
+    sha256 "ee60f946a51b89195a7b1b377594dfe206cf934d08b6d6ebf20ac309a41879e8"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-include-cleaner-21_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8-2/clang-include-cleaner-21_macos-amd64"
     sha256 "b645d352a73479130d302d760906d67f27ffb2c3bbcec43746d665d8b1052cbd"
   end
 
   resource "clang-resource-headers" do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-resource-headers-21.tar.gz"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8-2/clang-resource-headers-21.tar.gz"
     sha256 "756c8264072f48f07c31d99ae8450faa76ee5e620e023856e158bffe2d2a8014"
   end
 

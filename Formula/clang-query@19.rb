@@ -1,20 +1,20 @@
 class ClangQueryAT19 < Formula
   desc "Static binary for clang-query"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "19.1.7"
+  version "19.1.7-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7/clang-query-19_macos-arm64"
-    sha256 "f6503fd253c002aa70363d2dfe8d94291aff0c81495bcb9bf2efbfbdb55604ff"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7-2/clang-query-19_macos-arm64"
+    sha256 "c0f52291c11559dd0b48cd54a06b825b9ed24e6e413054552372e7b8f6b405fe"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7/clang-query-19_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7-2/clang-query-19_macos-amd64"
     sha256 "ea7f50f7f10df27a6e6571dd2ba0e262bc1d2176ed3529c563d4017ddb6c7a0e"
   end
 
   resource "clang-resource-headers" do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7/clang-resource-headers-19.tar.gz"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-19.1.7-2/clang-resource-headers-19.tar.gz"
     sha256 "e87901f90bd807d71a9a957f7b1dcd8822ea7d496ab8710e28d16c4e287dbf11"
   end
 

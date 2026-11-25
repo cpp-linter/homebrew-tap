@@ -1,20 +1,20 @@
 class ClangTidyAT21 < Formula
   desc "Static binary for clang-tidy"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "21.1.8"
+  version "21.1.8-2"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-tidy-21_macos-arm64"
-    sha256 "d94dbf5f3d8735d41518f2ac70798f8266dc358a0a91835e08c96dc84815a198"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8-2/clang-tidy-21_macos-arm64"
+    sha256 "ad02550e615d4690ce80facff6a7d10be072208a8177de220abbc6f484e7088c"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-tidy-21_macos-amd64"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8-2/clang-tidy-21_macos-amd64"
     sha256 "3424b4db0921471cbd5f56c834f9ea0bb9a6f6a946ecfa96c9147bba8ead935a"
   end
 
   resource "clang-resource-headers" do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8/clang-resource-headers-21.tar.gz"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-21.1.8-2/clang-resource-headers-21.tar.gz"
     sha256 "756c8264072f48f07c31d99ae8450faa76ee5e620e023856e158bffe2d2a8014"
   end
 
