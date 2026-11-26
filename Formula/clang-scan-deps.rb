@@ -1,16 +1,16 @@
 class ClangScanDeps < Formula
   desc "Static binary for clang-scan-deps"
   homepage "https://github.com/cpp-linter/clang-tools-static-binaries"
-  version "23.1.5"
+  version "23.1.6"
 
   on_arm do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-scan-deps-23_macos-arm64"
-    sha256 "26b30a40f9780e02da75c93a3b44560403019395ddb3ca12777f1818d822ebb4"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.6/clang-scan-deps-23_macos-arm64"
+    sha256 "cc90af53658dbe9152d2afc07665c4feb4c4824657530e76b70c04511dd4b4db"
   end
 
   on_intel do
-    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.5/clang-scan-deps-23_macos-amd64"
-    sha256 "da9e95a9c9cf59101340c75657e8106dfb39b85c302fa708e9a7d14e9a52a2f5"
+    url "https://github.com/cpp-linter/clang-tools-static-binaries/releases/download/llvm-23.1.6/clang-scan-deps-23_macos-amd64"
+    sha256 "93d37ee5c76b38052148166ea3477a01d8213a1c10377d53e48aee5fa4aea5a9"
   end
 
   def install
